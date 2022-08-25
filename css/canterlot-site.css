@@ -1,0 +1,441 @@
+/*选择所有元素*/
+* {
+  /*为了让手机端点击不出现蓝色高光*/
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+/*身体*/
+body {
+  margin: 0;
+  display: flex;
+  background-image: url(https://api.kdcc.cn/);
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  font-family: 微软雅黑;
+  flex-direction: column;
+  transition-duration: 1s;
+}
+
+/*页面主体*/
+main {
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 60px;
+  align-items: center;
+  background-color: #0000002f;
+  transition-duration: 1s;
+}
+
+/*超链接*/
+a {
+  text-decoration: none;
+}
+
+/*搜索引擎*/
+.searchEngine {
+  width: 500px;
+  border: none;
+  border-radius: 5px;
+  height: 45px;
+  background-color: #f7f8f9d4;
+  padding-left: 35px;
+  padding-right: 45px;
+  font-size: 16px;
+  box-shadow: #0000001f 0px 4px 20px;
+  transition-duration: 0.2s;
+}
+
+.searchEngine:focus {
+  background-color: #ffffff;
+  outline: none;
+  transition-duration: 0.2s;
+}
+
+/*搜索引擎图标*/
+#searchEngineIcon {
+  position: relative;
+  left: 32px;
+  cursor: pointer;
+  height: 20px;
+  width: 20px;
+  border-radius: 3px;
+}
+
+/*搜索引擎选择下拉框*/
+#searchEngineSelect {
+  position: absolute;
+  height: 22px;
+  width: 22px;
+  margin-left: 30px;
+  background: transparent;
+  border: 0;
+  outline: none;
+  color: transparent;
+  cursor: pointer;
+}
+
+/*搜索引擎选择下拉框的选项*/
+.searchEngineSelectOption {
+  color: #000000;
+}
+
+/*搜索按钮*/
+.searchEngine_button {
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  position: relative;
+  right: 32px;
+}
+
+/*装在搜索按钮里的图片*/
+.searchEngine_button_img {
+  display: flex;
+  height: 20px;
+  width: 20px;
+}
+
+/*顶部导航条*/
+bar_top {
+  display: flex;
+  width: 100%;
+  background: transparent;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/*顶部导航条の按钮*/
+.bar_top_links {
+  color: #ffffff;
+  display: flex;
+  text-decoration: none;
+  transition-duration: 0.1s;
+  padding: 10px;
+  border-radius: 5px;
+  font-weight: bold;
+  font-size: 22px;
+  cursor: pointer;
+  background: transparent;
+  margin: 10px;
+  height: 20px;
+  width: 20px;
+  align-items: center;
+  justify-content: center;
+}
+
+.bar_top_links:hover {
+  transition-duration: 0.1s;
+  background-color: #ffffff37;
+}
+
+/*导航分类按钮*/
+.nav_select_links {
+  color: #ffffff;
+  display: flex;
+  text-decoration: none;
+  height: 35px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin-left: 8px;
+  margin-right: 8px;
+  font-weight: bold;
+  font-size: 15px;
+  cursor: pointer;
+  background: transparent;
+  align-items: center;
+  border-bottom: 3px solid #ffffff00;
+  transition-duration: 0.1s;
+  user-select: none;
+}
+
+/*导航分类区*/
+nav_select {
+  display: flex;
+  flex-direction: row;
+  height: auto;
+  width: 800px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+  justify-content: center;
+}
+
+/*导航主区*/
+nav {
+  display: flex;
+  flex-direction: column;
+  width: 800px;
+  background-color: #f7f8f9eb;
+  border-radius: 5px;
+  padding: 10px;
+  box-shadow: #0000001f 0px 4px 20px;
+  min-height: 500px;
+}
+
+/*导航の链接部分*/
+nav_links {
+  display: flex;
+  flex-direction: column;
+}
+
+/*导航的一个类*/
+choice {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  justify-content: center;
+  flex-direction: row;
+}
+
+/*导航卡片*/
+nav_link {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  background-color: #ffffff;
+  color: #000000;
+  border-radius: 5px;
+  margin: 10px;
+  padding: 10px;
+  transition-duration: 0.1s;
+  width: 310px;
+  height: 60px;
+  box-shadow: #0000001f 0px 4px 8px;
+}
+
+/*导航卡片-悬浮变色*/
+nav_link:hover {
+  background-color: #ffffffa9;
+  transition-duration: 0.1s;
+}
+
+/*导航卡片-点击变小*/
+nav_link:active {
+  transform: scale(0.97, 0.97);
+  transition-duration: 0.1s;
+}
+
+/*导航卡片标题*/
+nav_link_title {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 2px;
+}
+
+/*导航卡片下半部分*/
+nav_link_right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+/*导航卡片图标*/
+.icon {
+  height: 40px;
+  width: 40px;
+  border-radius: 5px;
+  margin-right: 10px;
+  display: flex;
+}
+
+/*导航卡片介绍*/
+nav_link_description {
+  font-size: 14px;
+  color: #9c9c9c;
+}
+
+/*纯文字板块*/
+.common {
+  margin: 30px;
+}
+
+/*纯文字板块の标题*/
+.common_title {
+  font-weight: bold;
+  font-size: 25px;
+  padding-bottom: 8px;
+  border-bottom: 4px solid #000000;
+}
+
+/*纯文字板块の二级标题*/
+.common_title_2 {
+  display: flex;
+  font-size: 23px;
+  margin-bottom: 8px;
+  justify-content: space-between;
+}
+
+/*纯文字板块の三级标题（更新日志日期）*/
+.common_title_3 {
+  font-size: 15px;
+  margin-bottom: 8px;
+  color: #9c9c9c;
+}
+
+/*纯文字板块の主体*/
+.common_text {
+  margin-top: 10px;
+  font-size: 16px;
+  line-height: 1.4;
+  letter-spacing: 0.8px;
+}
+
+/*“关于本站”页面の按钮*/
+.about_button {
+  display: flex;
+  align-items: center;
+  background: transparent;
+  border: 1.5px solid #000000;
+  outline: none;
+  border-radius: 5px;
+  font-size: 16px;
+  padding: 10px;
+  transition-duration: 0.2s;
+  cursor: pointer;
+  margin-right: 10px;
+  width: auto;
+  color: #000000;
+}
+
+.about_button:hover {
+  background-color: #00000013;
+  transition-duration: 0.2s;
+}
+
+/*更新日志の一个版本*/
+version {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  background-color: #ffffff;
+  padding: 20px;
+  box-shadow: #0000001f 0px 4px 16px;
+}
+
+/*设置菜单*/
+settings {
+  display: flex;
+  z-index: 99;
+  flex-direction: column;
+  background-color: #f7f8f9eb;
+  border-radius: 5px;
+  box-shadow: #0000001f 0px 4px 20px;
+  position: absolute;
+  top: 57px;
+  right: 10px;
+  padding: 10px;
+  transform: scale(0, 0);
+  transition-duration: 0.2s;
+  width: 290px;
+}
+
+/*设置菜单的一个类别*/
+settings_class {
+  display: flex;
+  flex-direction: column;
+  background-color: #ffffff;
+  margin-bottom: 10px;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: #0000001f 0px 4px 8px;
+}
+
+/*设置菜单的一个类别的标题*/
+settings_title {
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+/*设置菜单的一项*/
+settings_option {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+/*设置菜单的一项的表单元素*/
+.settings_form {
+  height: 18px;
+  width: 18px;
+  margin-right: 5px;
+  position: relative;
+  left: -4px;
+}
+
+/*背景链接输入框*/
+.backgroundUrlInputBox {
+  margin-left: 10px;
+  width: 100px;
+}
+
+/*应用背景按钮*/
+.applyBackgroundButton {
+  margin-left: 2px;
+}
+
+/*“设置”菜单的按钮*/
+.settings_button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  outline: none;
+  border-radius: 5px;
+  padding: 5px;
+  cursor: pointer;
+  width: auto;
+  font-size: 15px;
+  transition-duration: 0.2s;
+  flex: 1;
+  color: #000000;
+  background-color: #ffffff;
+  box-shadow: #0000001f 0px 4px 8px;
+}
+
+.settings_button:hover {
+  background-color: #ffffff00;
+  transition-duration: 0.2s;
+}
+
+/*移动端适配*/
+@media (max-width: 600px) {
+
+  /*宽度适配*/
+  .searchEngine {
+    width: 100%;
+  }
+
+  nav {
+    width: 90%;
+  }
+
+  nav_select {
+    width: 90%;
+  }
+
+  /*把以下元素hover的颜色设为原来的，相当于没有*/
+  nav_link:hover {
+    background-color: #ffffff;
+  }
+
+  .bar_top_links:hover {
+    background: transparent;
+  }
+
+  /*取消导航卡片点击时弹一下的效果，移动端效果不好*/
+  nav_link:active {
+    transform: scale(1, 1);
+  }
+
+  /*导航卡片宽度自适应*/
+  choice {
+    flex-direction: column;
+    flex-wrap: nowrap;
+  }
+
+  nav_link {
+    width: unset;
+  }
+}
