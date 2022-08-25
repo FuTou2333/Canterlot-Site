@@ -6,6 +6,6 @@
 
 网站图标：[https://www.deviantart.com/plainoasis/art/Canterlot-city-697785793](https://www.deviantart.com/plainoasis/art/Canterlot-city-697785793)
 
-> 欢迎在Issues反馈问题或提出建议
+> 欢迎在Issues反馈问题、提出建议或投稿网站
 > 
 > 如果您有意参与本站的开发，也可以在Issues联系我们~
