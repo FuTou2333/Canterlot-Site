@@ -1,0 +1,1466 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>坎特洛特 - 交通枢纽</title>
+  <link rel="icon" href="./assets/favicon.png">
+  <link rel="stylesheet" href="./css/cloudsdale-start.css">
+  <link rel="stylesheet" href="./css/cloudsdale-start-dark.css">
+</head>
+
+<body id="body">
+
+  <main id="main">
+
+    <!--顶部导航条-->
+    <bar_top>
+
+      <!--天气组件-->
+      <div style="z-index:999;" id="weather">
+        <div id="he-plugin-simple"></div>
+      </div>
+      <script>
+        WIDGET = {
+          "CONFIG": {
+            "modules": "120",
+            "background": "5",
+            "tmpColor": "FFFFFF",
+            "tmpSize": "15",
+            "cityColor": "FFFFFF",
+            "citySize": "15",
+            "aqiColor": "FFFFFF",
+            "aqiSize": "15",
+            "weatherIconSize": "23",
+            "alertIconSize": "17",
+            "padding": "10px 10px 10px 10px",
+            "shadow": "1",
+            "language": "auto",
+            "borderRadius": "5",
+            "fixed": "false",
+            "vertical": "center",
+            "horizontal": "left",
+            "key": "84361158168946eeb595281bff49c6cc"
+          }
+        }
+      </script>
+      <script src="https://widget.qweather.net/simple/static/js/he-simple-common.js?v=2.0"></script>
+
+      <!--设置菜单按钮-->
+      <nav_select_links
+        style="display: flex;align-items: center;width:100%;justify-content: flex-end;user-select:none;">
+        <a class="bar_top_links" id="settingsButton" onclick="changeSettings()">⚙</a>
+      </nav_select_links>
+
+      <!--设置菜单-->
+      <settings id="settings">
+
+        <!--设置菜单的一个类别-->
+        <settings_class>
+
+          <!--设置菜单的一个类别的标题-->
+          <settings_title>外观</settings_title>
+
+          <!--设置菜单的一行-->
+          <settings_option>
+            <input type="checkbox" class="settings_form" id="darkMode" onclick="change_darkMode()">
+            <span class="settings_description">深色模式</span>
+          </settings_option>
+
+        </settings_class>
+
+        <settings_class>
+
+          <settings_title>背景</settings_title>
+
+          <form style="margin-bottom:0;">
+
+            <settings_option>
+              <input type="radio" name="background" class="settings_form" id="meiRiYiTu" checked>
+              <span class="settings_description">每日一图</span>
+            </settings_option>
+
+            <settings_option>
+              <input type="radio" name="background" class="settings_form" id="ziDingYi">
+              <span class="settings_description">自定义</span>
+              <div style="display:flex;flex-direction:row;display:none;" id="ziDingYiInputDiv">
+                <input class="backgroundUrlInputBox" placeholder="输入图片链接" id="ziDingYiInputBox">
+                <button type="button" class="applyBackgroundButton" style="display:flex;align-items:center;"
+                  onclick="applyBackgroundImage()">应用</button>
+              </div>
+            </settings_option>
+
+          </form>
+
+        </settings_class>
+
+        <settings_class>
+
+          <settings_title>页面布局</settings_title>
+
+          <settings_option>
+            <div id="xianShiDaoHangDiv">
+              <input type="checkbox" class="settings_form" id="xianShiDaoHang" onclick="change_xianShiDaoHang()"
+                checked>
+            </div>
+            <span class="settings_description">显示导航</span>
+          </settings_option>
+
+          <settings_option>
+            <div id="xianShiDaoHangDiv">
+              <input type="checkbox" class="settings_form" id="xianShiTianQi" onclick="change_xianShiTianQi()" checked>
+            </div>
+            <span class="settings_description">显示天气</span>
+          </settings_option>
+
+        </settings_class>
+
+        <!--设置菜单的链接-->
+        <div style="display:flex;justify-content: center;">
+          <a class="settings_button" style="margin-right:5px;" onclick="setDefultSettings();">恢复默认</a>
+          <a href="./about.html" target="_blank" class="settings_button" style="margin-left:5px;">关于本站</a>
+        </div>
+
+      </settings>
+
+    </bar_top>
+
+    <!--时间显示-->
+    <p id="displayTime" style="color:white;font-size: 35px;margin-top:60px;margin-bottom: 25px;"></p>
+
+    <!--时间显示js-->
+    <script>
+      function getTime() {
+        let rawTime = Date().slice(16, 21); //从Date()返回的一大串东西中截取到XX:XX格式的时间
+        if (rawTime.slice(0, 1) === "0") {  //如果小时的第一位是0，则去掉
+          var time = rawTime.slice(1, 5);
+        } else {
+          var time = rawTime; //如果第一位不是0则直接输出
+        }
+        document.getElementById("displayTime").innerHTML = time;
+      }
+      getTime(); //先执行一次getTime()
+      setInterval("getTime()", 1000); //以后每秒执行一次getTime()
+    </script>
+
+    <!--搜索框-->
+    <form action="https://www.baidu.com/s" target="_blank" id="searchEngineForm">
+      <div style="display: flex;align-items:center;margin-bottom: 110px;">
+        <!--搜索引擎图标-->
+        <img src="./assets/engineBaidu.svg" id="searchEngineIcon" style="display:flex;">
+        <!--搜索引擎下拉选择框-->
+        <select id="searchEngineSelect">
+          <option class="searchEngineSelectOption">百度</option>
+          <option class="searchEngineSelectOption">必应</option>
+          <option class="searchEngineSelectOption">Derpibooru图片</option>
+          <option class="searchEngineSelectOption">FimTale小说</option>
+          <option class="searchEngineSelectOption">EqCN资讯</option>
+        </select>
+        <!--输入框-->
+        <input class="searchEngine" name="wd" placeholder="搜索" id="searchEngineInput">
+        <!--搜索按钮-->
+        <button type="submit" class="searchEngine_button">
+          <img src="./assets/search.svg" class="searchEngine_button_img">
+        </button>
+      </div>
+    </form>
+
+    <!--导航分类-->
+    <nav_select id="navSelect">
+      <a class="nav_select_links" id="navClass1_button" onclick="change_navClass1();checkNavChoice()">资讯</a>
+      <a class="nav_select_links" id="navClass2_button" onclick="change_navClass2();checkNavChoice()">社区</a>
+      <a class="nav_select_links" id="navClass3_button" onclick="change_navClass3();checkNavChoice()">视频</a>
+      <a class="nav_select_links" id="navClass4_button" onclick="change_navClass4();checkNavChoice()">游戏</a>
+      <a class="nav_select_links" id="navClass5_button" onclick="change_navClass5();checkNavChoice()">工具</a>
+      <a class="nav_select_links" id="navClass6_button" onclick="change_navClass6();checkNavChoice()">音乐</a>
+      <a class="nav_select_links" id="navClass7_button" onclick="change_navClass7();checkNavChoice()">图片</a>
+      <a class="nav_select_links" id="navClass8_button" onclick="change_navClass8();checkNavChoice()">小说</a>
+      <a class="nav_select_links" id="navClass9_button" onclick="change_navClass9();checkNavChoice()">漫画</a>
+      <a class="nav_select_links" id="navClass10_button" onclick="change_navClass10();checkNavChoice()">维基</a>
+      <a class="nav_select_links" id="navClass11_button" onclick="change_navClass11();checkNavChoice()">周边</a>
+      <a class="nav_select_links" id="navClass12_button" onclick="change_navClass12();checkNavChoice()">资源</a>
+    </nav_select>
+
+    <!--导航-->
+    <nav id="nav">
+
+      <!--导航链接-->
+      <nav_links>
+
+        <!--资讯类-->
+        <choice id="navClass1">
+
+          <a href="https://www.equestriacn.com/" target="_blank">
+            <nav_link>
+              <nav_link_left>
+                <img src="./assets/equestriacn.ico" class="icon">
+              </nav_link_left>
+              <nav_link_right>
+                <nav_link_title>小马中国</nav_link_title>
+                <nav_link_description>EquestriaCN</nav_link_description>
+              </nav_link_right>
+            </nav_link>
+          </a>
+
+          <a href="https://www.equestriadaily.com/" target="_blank">
+            <nav_link>
+              <nav_link_left>
+                <img src="./assets/equestriadaily.jpg" class="icon">
+              </nav_link_left>
+              <nav_link_right>
+                <nav_link_title>EquestriaDaily</nav_link_title>
+                <nav_link_description>小马国日报</nav_link_description>
+              </nav_link_right>
+            </nav_link>
+          </a>
+
+          <a href="https://everypony.ru/" target="_blank">
+            <nav_link>
+              <nav_link_left>
+                <img src="./assets/everypony.png" class="icon">
+              </nav_link_left>
+              <nav_link_right>
+                <nav_link_title>EveryPony</nav_link_title>
+                <nav_link_description>俄罗斯小马新闻站</nav_link_description>
+              </nav_link_right>
+            </nav_link>
+          </a>
+
+          <a href="https://leponeyblanc.fr/" target="_blank">
+            <nav_link>
+              <nav_link_left>
+                <img src="./assets/leponeyblanc.png" class="icon">
+              </nav_link_left>
+              <nav_link_right>
+                <nav_link_title>Le Poney Blanc</nav_link_title>
+                <nav_link_description>法国小马新闻站</nav_link_description>
+              </nav_link_right>
+            </nav_link>
+          </a>
+
+          <a href="https://www.equestriagaming.net/" target="_blank">
+            <nav_link>
+              <nav_link_left>
+                <img src="./assets/equestriagaming.png" class="icon">
+              </nav_link_left>
+              <nav_link_right>
+                <nav_link_title>Equestria Gaming</nav_link_title>
+                <nav_link_description>小马游戏资讯</nav_link_description>
+              </nav_link_right>
+            </nav_link>
+          </a>
+
+          <a href="http://ponydaily.blogspot.com/" target="_blank">
+            <nav_link>
+              <nav_link_left>
+                <img src="./assets/ponydaily.jpg" class="icon">
+              </nav_link_left>
+              <nav_link_right>
+                <nav_link_title>小馬日報</nav_link_title>
+                <nav_link_description>已停更，但仍可访问</nav_link_description>
+              </nav_link_right>
+            </nav_link>
+          </a>
+
+          <a href="https://ponycon.info/" target="_blank">
+            <nav_link>
+              <nav_link_left>
+                <img src="./assets/ponyconcountdown.png" class="icon">
+              </nav_link_left>
+              <nav_link_right>
+                <nav_link_title>PonyCon Countdown</nav_link_title>
+                <nav_link_description>世界各地马展倒计时</nav_link_description>
+              </nav_link_right>
+            </nav_link>
+          </a>
+
+        </choice>
+
+        <!--社区类-->
+        <choice id="navClass2">
+
+          <a href="https://tieba.baidu.com/f?kw=%E5%B0%8F%E9%A9%AC%E5%AE%9D%E8%8E%89" target="_blank">
+            <nav_link>
+              <nav_link_left>
+                <img src="./assets/tiebaxiaomabaoli.jpg" class="icon">
+              </nav_link_left>
+              <nav_link_right>
+                <nav_link_title>小马宝莉吧</nav_link_title>
+                <nav_link_description>百度小马宝莉贴吧</nav_link_description>
+              </nav_link_right>
+            </nav_link>
+          </a>
+
+          <a href="https://tieba.baidu.com/f?kw=%E5%B0%8F%E9%A9%AC%E9%A9%B9%E4%B9%8B%E5%8F%8B%E8%B0%8A%E9%AD%94%E6%B3%95"
+            target="_blank">
+            <nav_link>
+              <nav_link_left>
+                <img src="./assets/tiebaponyfriendshipmagic.jpg" class="icon">
+              </nav_link_left>
+              <nav_link_right>
+                <nav_link_title>小马驹之友谊魔法吧</nav_link_title>
+                <nav_link_description>百度小马驹之友谊魔法贴吧</nav_link_description>
+              </nav_link_right>
+            </nav_link>
+          </a>
+
+          <a href="https://mlpforums.com/" target="_blank">
+            <nav_link>
+              <nav_link_left>
+                <img src="./assets/mlpforums.png" class="icon">
+              </nav_link_left>
+              <nav_link_right>
+                <nav_link_title>MLP Forums</nav_link_title>
+                <nav_link_description>目前最大的 Brony 论坛</nav_link_description>
+              </nav_link_right>
+            </nav_link>
+          </a>
+
+          <a href="https://forums.equestriadaily.com/" target="_blank">
+            <nav_link>
+              <nav_link_left>
+                <img src="./assets/equestriadailyforums.jpg" class="icon">
+              </nav_link_left>
+              <nav_link_right>
+                <nav_link_title>EquestriaDaily Forums</nav_link_title>
+                <nav_link_description>小马国日报官方论坛</nav_link_description>
+              </nav_link_right>
+            </nav_link>
+          </a>
+
+          <a href="https://boards.4channel.org/mlp/" target="_blank">
+            <nav_link>
+              <nav_link_left>
+                <img src="./assets/4chan.png" class="icon">
+              </nav_link_left>
+              <nav_link_right>
+                <nav_link_title>4chan</nav_link_title>
+                <nav_link_description>综合型讨论区 4chan 开设的小马专板</nav_link_description>
+              </nav_link_right>
+            </nav_link>
+          </a>
+
+          <a href="https://www.ponychan.net/" target="_blank">
+            <nav_link>
+              <nav_link_left>
+                <img src="./assets/ponychan.png" class="icon">
+              </nav_link_left>
+              <nav_link_right>
+                <nav_link_title>Ponychan</nav_link_title>
+                <nav_link_description>类似于 4chan 的贴图版</nav_link_description>
+              </nav_link_right>
+            </nav_link>
+          </a>
+
+          <a href="https://www.allspark.com/forums/forums/my-little-allsparkle.16/" target="_blank">
+            <nav_link>
+              <nav_link_left>
+                <img src="./assets/allsparkforums.jpg" class="icon">
+              </nav_link_left>
+              <nav_link_right>
+                <nav_link_title>Allspark Forums</nav_link_title>
+                <nav_link_description>原变形金刚论坛，现在也是小马论坛</nav_link_description>
+              </nav_link_right>
+            </nav_link>
+          </a>
+
+          <a href="http://rainbowdash.net/" target="_blank">
+            <nav_link>
+              <nav_link_left>
+                <img src="./assets/rainbowdashnetwork.jpg" class="icon">
+              </nav_link_left>
+              <nav_link_right>
+                <nav_link_title>Rainbow Dash Network</nav_link_title>
+                <nav_link_description>云宝黛茜论坛</nav_link_description>
+              </nav_link_right>
+            </nav_link>
+          </a>
+
+          <a href="https://www.reddit.com/r/mylittlepony" target="_blank">
+            <nav_link>
+              <nav_link_left>
+                <img src="./assets/reddit.png" class="icon">
+              </nav_link_left>
+              <nav_link_right>
+                <nav_link_title>Reddit</nav_link_title>
+                <nav_link_description>Reddit 小马社区</nav_link_description>
+              </nav_link_right>
+            </nav_link>
+          </a>
+
+          <a href="https://aminoapps.com/c/equestria/home/" target="_blank">
+            <nav_link>
+              <nav_link_left>
+                <img src="./assets/amino.png" class="icon">
+              </nav_link_left>
+              <nav_link_right>
+                <nav_link_title>Amino</nav_link_title>
+                <nav_link_description>氨基社区小马俱乐部</nav_link_description>
+              </nav_link_right>
+            </nav_link>
+          </a>
+
+        </choice>
+
+        <!--视频类-->
+        <choice id="navClass3">
+
+          <a href="https://bronystate.net/" target="_blank">
+            <nav_link>
+              <nav_link_left>
+                <img src="./assets/bronystate.png" class="icon">
+              </nav_link_left>
+              <nav_link_right>
+                <nav_link_title>BronyState</nav_link_title>
+                <nav_link_description>每周五周六有电影之夜</nav_link_description>
+              </nav_link_right>
+            </nav_link>
+          </a>
+
+          <a href="https://derpy.tv/" target="_blank">
+            <nav_link>
+              <nav_link_left>
+                <img src="./assets/derpytv.jpg" class="icon">
+              </nav_link_left>
+              <nav_link_right>
+                <nav_link_title>DerpyTV</nav_link_title>
+                <nav_link_description>小呆 TV</nav_link_description>
+              </nav_link_right>
+            </nav_link>
+          </a>
+
+          <a href="http://ponyvillelive.com/" target="_blank">
+            <nav_link>
+              <nav_link_left>
+                <img src="./assets/ponyvillelive.png" class="icon">
+              </nav_link_left>
+              <nav_link_right>
+                <nav_link_title>PonyvilleLive</nav_link_title>
+                <nav_link_description>马镇直播，音频视频都有</nav_link_description>
+              </nav_link_right>
+            </nav_link>
+          </a>
+
+          <a href="https://stream.brony.eu/" target="_blank">
+            <nav_link>
+              <nav_link_left>
+                <img src="./assets/website.png" class="icon">
+              </nav_link_left>
+              <nav_link_right>
+                <nav_link_title>Pony Player</nav_link_title>
+                <nav_link_description>马展直播</nav_link_description>
+              </nav_link_right>
+            </nav_link>
+          </a>
+
+          <a href="https://event.pony.town/" target="_blank">
+            <nav_link>
+              <nav_link_left>
+                <img src="./assets/ponytown.png" class="icon">
+              </nav_link_left>
+              <nav_link_right>
+                <nav_link_title>Pony Town Events</nav_link_title>
+                <nav_link_description>Pony Town 活动地址</nav_link_description>
+              </nav_link_right>
+            </nav_link>
+          </a>
+
+          <a href="https://pony.tube/" target="_blank">
+            <nav_link>
+              <nav_link_left>
+                <img src="./assets/ponytube.jpg" class="icon">
+              </nav_link_left>
+              <nav_link_right>
+                <nav_link_title>PonyTube</nav_link_title>
+                <nav_link_description>马迷们的油管</nav_link_description>
+              </nav_link_right>
+            </nav_link>
+          </a>
+
+          <a href="https://cytu.be/r/Top10PonyVideos" target="_blank">
+            <nav_link>
+              <nav_link_left>
+                <img src="./assets/top10ponyvideos.png" class="icon">
+              </nav_link_left>
+              <nav_link_right>
+                <nav_link_title>Top 10 Pony Videos</nav_link_title>
+                <nav_link_description>十佳小马视频轮播</nav_link_description>
+              </nav_link_right>
+            </nav_link>
+          </a>
+
+          <a href="http://knowyourmeme.com/memes/subcultures/my-little-pony-friendship-is-magic/videos" target="_blank">
+            <nav_link>
+              <nav_link_left>
+                <img src="./assets/knowyourmeme.png" class="icon">
+              </nav_link_left>
+              <nav_link_right>
+                <nav_link_title>Know Your Meme</nav_link_title>
+                <nav_link_description>实时更新优质小马同人视频集</nav_link_description>
+              </nav_link_right>
+            </nav_link>
+          </a>
+
+        </choice>
+
+        <!--游戏类-->
+        <choice id="navClass4">
+
+          <a href="https://pony.town/" target="_blank">
+            <nav_link>
+              <nav_link_left>
+                <img src="./assets/ponytown.png" class="icon">
+              </nav_link_left>
+              <nav_link_right>
+                <nav_link_title>Pony Town</nav_link_title>
+                <nav_link_description>小马镇，像素风小马交流网站</nav_link_description>
+              </nav_link_right>
+            </nav_link>
+          </a>
+
+          <a href="https://tsssf.net/" target="_blank">
+            <nav_link>
+              <nav_link_left>
+                <img src="./assets/twilightsparklessecretshipficfolder.png" class="icon">
+              </nav_link_left>
+              <nav_link_right>
+                <nav_link_title>Twilight Sparkle's Secret Shipfic Folder</nav_link_title>
+                <nav_link_description>暮光闪闪的私密粮仓在线玩</nav_link_description>
+              </nav_link_right>
+            </nav_link>
+          </a>
+
+          <a href="https://www.dolldivine.com/my-little-pony-quiz.php" target="_blank">
+            <nav_link>
+              <nav_link_left>
+                <img src="./assets/whichmylittleponyareyou.jpg" class="icon">
+              </nav_link_left>
+              <nav_link_right>
+                <nav_link_title>Which Pony Are You</nav_link_title>
+                <nav_link_description>小马性格判断</nav_link_description>
+              </nav_link_right>
+            </nav_link>
+          </a>
+
+          <a href="http://arcade.equestriagaming.net/" target="_blank">
+            <nav_link>
+              <nav_link_left>
+                <img src="./assets/equestriagaming.png" class="icon">
+              </nav_link_left>
+              <nav_link_right>
+                <nav_link_title>Equestria Gaming Arcade</nav_link_title>
+                <nav_link_description>小马游戏在线玩</nav_link_description>
+              </nav_link_right>
+            </nav_link>
+          </a>
+
+          <a href="https://www.mylittlekaraoke.com/" target="_blank">
+            <nav_link>
+              <nav_link_left>
+                <img src="./assets/mylittlekaraoke.png" class="icon">
+              </nav_link_left>
+              <nav_link_right>
+                <nav_link_title>My Little Karaoke</nav_link_title>
+                <nav_link_description>我的小卡拉OK</nav_link_description>
+              </nav_link_right>
+            </nav_link>
+          </a>
+
+        </choice>
+
+        <!--工具类-->
+        <choice id="navClass5">
+
+          <a href="https://software.little.my/" target="_blank">
+            <nav_link>
+              <nav_link_left>
+                <img src="./assets/website.png" class="icon">
+              </nav_link_left>
+              <nav_link_right>
+                <nav_link_title>My Little Software</nav_link_title>
+                <nav_link_description>小马程序汇总</nav_link_description>
+              </nav_link_right>
+            </nav_link>
+          </a>
+
+          <a href="https://b23-tv.icu/" target="_blank">
+            <nav_link>
+              <nav_link_left>
+                <img src="./assets/website.png" class="icon">
+              </nav_link_left>
+              <nav_link_right>
+                <nav_link_title>小马UP收集</nav_link_title>
+                <nav_link_description>收集B站和小马有关的用户</nav_link_description>
+              </nav_link_right>
+            </nav_link>
+          </a>
+
+          <a href="https://www.dolldivine.com/mlp-fim-pony-creator.php" target="_blank">
+            <nav_link>
+              <nav_link_left>
+                <img src="./assets/mylittleponycreator.jpg" class="icon">
+              </nav_link_left>
+              <nav_link_right>
+                <nav_link_title>Pony Creator</nav_link_title>
+                <nav_link_description>小马生成器</nav_link_description>
+              </nav_link_right>
+            </nav_link>
+          </a>
+
+          <a href="https://15.ai/" target="_blank">
+            <nav_link>
+              <nav_link_left>
+                <img src="./assets/15ai.png" class="icon">
+              </nav_link_left>
+              <nav_link_right>
+                <nav_link_title>15.ai</nav_link_title>
+                <nav_link_description>小马及其他角色ai配音网站</nav_link_description>
+              </nav_link_right>
+            </nav_link>
+          </a>
+
+          <a href="https://ponyclock.com/" target="_blank">
+            <nav_link>
+              <nav_link_left>
+                <img src="./assets/ponystation.png" class="icon">
+              </nav_link_left>
+              <nav_link_right>
+                <nav_link_title>Pony Station</nav_link_title>
+                <nav_link_description>小马官方电影与剧集倒计时</nav_link_description>
+              </nav_link_right>
+            </nav_link>
+          </a>
+
+          <a href="https://ponyfrance.net/" target="_blank">
+            <nav_link>
+              <nav_link_left>
+                <img src="./assets/ponyfrance.png" class="icon">
+              </nav_link_left>
+              <nav_link_right>
+                <nav_link_title>Pony France</nav_link_title>
+                <nav_link_description>小马网站托管</nav_link_description>
+              </nav_link_right>
+            </nav_link>
+          </a>
+
+        </choice>
+
+        <!--音乐类-->
+        <choice id="navClass6">
+
+          <a href="https://ponyvillefm.com/" target="_blank">
+            <nav_link>
+              <nav_link_left>
+                <img src="./assets/ponyvillefm.png" class="icon">
+              </nav_link_left>
+              <nav_link_right>
+                <nav_link_title>PonyvilleFM</nav_link_title>
+                <nav_link_description>马镇电台</nav_link_description>
+              </nav_link_right>
+            </nav_link>
+          </a>
+
+          <a href="https://pony.fm/" target="_blank">
+            <nav_link>
+              <nav_link_left>
+                <img src="./assets/ponyfm.png" class="icon">
+              </nav_link_left>
+              <nav_link_right>
+                <nav_link_title>Pony FM</nav_link_title>
+                <nav_link_description>小马音乐站，免费下载，无限上传</nav_link_description>
+              </nav_link_right>
+            </nav_link>
+          </a>
+
+          <a href="https://bronytunes.com/" target="_blank">
+            <nav_link>
+              <nav_link_left>
+                <img src="./assets/bronytunes.png" class="icon">
+              </nav_link_left>
+              <nav_link_right>
+                <nav_link_title>BronyTunes</nav_link_title>
+                <nav_link_description>仿 Tunes 小马音乐站</nav_link_description>
+              </nav_link_right>
+            </nav_link>
+          </a>
+
+          <a href="https://forestrainmedia.com/" target="_blank">
+            <nav_link>
+              <nav_link_left>
+                <img src="./assets/forestrain.png" class="icon">
+              </nav_link_left>
+              <nav_link_right>
+                <nav_link_title>Forest Rain</nav_link_title>
+                <nav_link_description>小马同人音乐站点，有实体专辑出售</nav_link_description>
+              </nav_link_right>
+            </nav_link>
+          </a>
+
+          <a href="http://soundcloud.com/dannyimusic" target="_blank">
+            <nav_link>
+              <nav_link_left>
+                <img src="./assets/danielingram.jpg" class="icon">
+              </nav_link_left>
+              <nav_link_right>
+                <nav_link_title>Daniel Ingram</nav_link_title>
+                <nav_link_description>Daniel Ingram 的音乐网</nav_link_description>
+              </nav_link_right>
+            </nav_link>
+          </a>
+
+          <a href="https://radiobrony.fr/" target="_blank">
+            <nav_link>
+              <nav_link_left>
+                <img src="./assets/radiobrony.png" class="icon">
+              </nav_link_left>
+              <nav_link_right>
+                <nav_link_title>RadioBrony</nav_link_title>
+                <nav_link_description>Brony 法语广播电台</nav_link_description>
+              </nav_link_right>
+            </nav_link>
+          </a>
+
+        </choice>
+
+        <!--图片类-->
+        <choice id="navClass7">
+
+          <a href="https://www.derpibooru.org/" target="_blank">
+            <nav_link>
+              <nav_link_left>
+                <img src="./assets/derpibooru.png" class="icon">
+              </nav_link_left>
+              <nav_link_right>
+                <nav_link_title>Derpibooru</nav_link_title>
+                <nav_link_description>呆站，目前最大的小马同人图站</nav_link_description>
+              </nav_link_right>
+            </nav_link>
+          </a>
+
+          <a href="https://manebooru.art/" target="_blank">
+            <nav_link>
+              <nav_link_left>
+                <img src="./assets/manebooru.png" class="icon">
+              </nav_link_left>
+              <nav_link_right>
+                <nav_link_title>Manebooru</nav_link_title>
+                <nav_link_description>建站不久，但存有上百万同人图</nav_link_description>
+              </nav_link_right>
+            </nav_link>
+          </a>
+
+          <a href="https://ponybooru.org/" target="_blank">
+            <nav_link>
+              <nav_link_left>
+                <img src="./assets/ponybooru.png" class="icon">
+              </nav_link_left>
+              <nav_link_right>
+                <nav_link_title>Ponybooru</nav_link_title>
+                <nav_link_description>又一个类 Derpibooru 图站</nav_link_description>
+              </nav_link_right>
+            </nav_link>
+          </a>
+
+          <a href="https://mlpvector.club/" target="_blank">
+            <nav_link>
+              <nav_link_left>
+                <img src="./assets/mlpvector.png" class="icon">
+              </nav_link_left>
+              <nav_link_right>
+                <nav_link_title>MLP Vector</nav_link_title>
+                <nav_link_description>小马矢量俱乐部，所有角色/剧集矢量图</nav_link_description>
+              </nav_link_right>
+            </nav_link>
+          </a>
+
+          <a href="https://www.deviantart.com/search?q=My%20Little%20Pony" target="_blank">
+            <nav_link>
+              <nav_link_left>
+                <img src="./assets/deviantart.png" class="icon">
+              </nav_link_left>
+              <nav_link_right>
+                <nav_link_title>DeviantArt</nav_link_title>
+                <nav_link_description>知名图站，优质模板/同人图/用户群</nav_link_description>
+              </nav_link_right>
+            </nav_link>
+          </a>
+
+          <a href="https://www.pixiv.net/en/tags/My%20Little%20Pony" target="_blank">
+            <nav_link>
+              <nav_link_left>
+                <img src="./assets/pixiv.png" class="icon">
+              </nav_link_left>
+              <nav_link_right>
+                <nav_link_title>Pixiv</nav_link_title>
+                <nav_link_description>日本知名图站，优质小马同人图</nav_link_description>
+              </nav_link_right>
+            </nav_link>
+          </a>
+
+          <a href="https://www.pinterest.com/search/pins/?q=My%20Little%20Pony" target="_blank">
+            <nav_link>
+              <nav_link_left>
+                <img src="./assets/pinterest.png" class="icon">
+              </nav_link_left>
+              <nav_link_right>
+                <nav_link_title>Pinterest</nav_link_title>
+                <nav_link_description>知名图站，优质小马同人图</nav_link_description>
+              </nav_link_right>
+            </nav_link>
+          </a>
+
+          <a href="https://thisponydoesnotexist.net/" target="_blank">
+            <nav_link>
+              <nav_link_left>
+                <img src="./assets/thisponydoesnotexist.png" class="icon">
+              </nav_link_left>
+              <nav_link_right>
+                <nav_link_title>This Pony Does Not Exist</nav_link_title>
+                <nav_link_description>AI 生成小马头像</nav_link_description>
+              </nav_link_right>
+            </nav_link>
+          </a>
+
+          <a href="https://www.equestriacn.com/category/fanart/tupiantuijian/daily-pony-gallery" target="_blank">
+            <nav_link>
+              <nav_link_left>
+                <img src="./assets/equestriacn.ico" class="icon">
+              </nav_link_left>
+              <nav_link_right>
+                <nav_link_title>每日小马图片推荐</nav_link_title>
+                <nav_link_description>每天都有新鲜出炉的好看小马图片</nav_link_description>
+              </nav_link_right>
+            </nav_link>
+          </a>
+
+          <a href="https://www.lionsgate.com/movies/my-little-pony-the-movie" target="_blank">
+            <nav_link>
+              <nav_link_left>
+                <img src="./assets/lionsgate.jpg" class="icon">
+              </nav_link_left>
+              <nav_link_right>
+                <nav_link_title>Lionsgate</nav_link_title>
+                <nav_link_description>狮门影业，内含大电影相关的许多画作</nav_link_description>
+              </nav_link_right>
+            </nav_link>
+          </a>
+
+          <a href="https://www.deviantart.com/fyre-flye/" target="_blank">
+            <nav_link>
+              <nav_link_left>
+                <img src="./assets/laurenfaust.png" class="icon">
+              </nav_link_left>
+              <nav_link_right>
+                <nav_link_title>Lauren Faust</nav_link_title>
+                <nav_link_description>G4 小马动画主创劳伦·浮士德</nav_link_description>
+              </nav_link_right>
+            </nav_link>
+          </a>
+
+          <a href="https://tieba.baidu.com/p/5210002028" target="_blank">
+            <nav_link>
+              <nav_link_left>
+                <img src="./assets/kukefuwsz.jpg" class="icon">
+              </nav_link_left>
+              <nav_link_right>
+                <nav_link_title>库可夫的 DA 图片搬运楼</nav_link_title>
+                <nav_link_description>打不开 DA 的话来这里看看也不错哦</nav_link_description>
+              </nav_link_right>
+            </nav_link>
+          </a>
+
+          <a href="https://www.deviantart.com/mlp-fim/gallery/" target="_blank">
+            <nav_link>
+              <nav_link_left>
+                <img src="./assets/deviantart.png" class="icon">
+              </nav_link_left>
+              <nav_link_right>
+                <nav_link_title>MLP-FiM</nav_link_title>
+                <nav_link_description>综合性小马组</nav_link_description>
+              </nav_link_right>
+            </nav_link>
+          </a>
+
+          <a href="https://www.deviantart.com/mlp-vectorclub/gallery/" target="_blank">
+            <nav_link>
+              <nav_link_left>
+                <img src="./assets/deviantart.png" class="icon">
+              </nav_link_left>
+              <nav_link_right>
+                <nav_link_title>MLP Vector Gallery</nav_link_title>
+                <nav_link_description>小马矢量图组</nav_link_description>
+              </nav_link_right>
+            </nav_link>
+          </a>
+
+          <a href="https://www.deviantart.com/johnjoseco/" target="_blank">
+            <nav_link>
+              <nav_link_left>
+                <img src="./assets/deviantart.png" class="icon">
+              </nav_link_left>
+              <nav_link_right>
+                <nav_link_title>JohnJoseco</nav_link_title>
+                <nav_link_description>高产同人绘师</nav_link_description>
+              </nav_link_right>
+            </nav_link>
+          </a>
+
+          <a href="https://www.deviantart.com/csimadmax" target="_blank">
+            <nav_link>
+              <nav_link_left>
+                <img src="./assets/deviantart.png" class="icon">
+              </nav_link_left>
+              <nav_link_right>
+                <nav_link_title>Madmax</nav_link_title>
+                <nav_link_description>Madmax 三格漫画是特色，梗非常多</nav_link_description>
+              </nav_link_right>
+            </nav_link>
+          </a>
+
+          <a href="https://www.deviantart.com/pixelkitties" target="_blank">
+            <nav_link>
+              <nav_link_left>
+                <img src="./assets/deviantart.png" class="icon">
+              </nav_link_left>
+              <nav_link_right>
+                <nav_link_title>PixelKitties</nav_link_title>
+                <nav_link_description>PK 的图也具有丰富的细节和广泛的借鉴元素</nav_link_description>
+              </nav_link_right>
+            </nav_link>
+          </a>
+
+          <a href="https://www.deviantart.com/egophiliac/" target="_blank">
+            <nav_link>
+              <nav_link_left>
+                <img src="./assets/deviantart.png" class="icon">
+              </nav_link_left>
+              <nav_link_right>
+                <nav_link_title>Egophiliac</nav_link_title>
+                <nav_link_description>Ego 最大的特色是塞拉斯蒂娅和露娜两公主</nav_link_description>
+              </nav_link_right>
+            </nav_link>
+          </a>
+
+          <a href="https://www.deviantart.com/mrponiator/" target="_blank">
+            <nav_link>
+              <nav_link_left>
+                <img src="./assets/deviantart.png" class="icon">
+              </nav_link_left>
+              <nav_link_right>
+                <nav_link_title>Mr. Poniator</nav_link_title>
+                <nav_link_description>新番过后会发布Flash版里剧情、恶搞剧情</nav_link_description>
+              </nav_link_right>
+            </nav_link>
+          </a>
+
+          <a href="https://www.deviantart.com/saturnspace/" target="_blank">
+            <nav_link>
+              <nav_link_left>
+                <img src="./assets/deviantart.png" class="icon">
+              </nav_link_left>
+              <nav_link_right>
+                <nav_link_title>Saturnspace</nav_link_title>
+                <nav_link_description>来看看博士和小呆</nav_link_description>
+              </nav_link_right>
+            </nav_link>
+          </a>
+
+        </choice>
+
+        <!--小说类-->
+        <choice id="navClass8">
+
+          <a href="https://fimtale.com/" target="_blank">
+            <nav_link>
+              <nav_link_left>
+                <img src="./assets/fimtale.png" class="icon">
+              </nav_link_left>
+              <nav_link_right>
+                <nav_link_title>FimTale</nav_link_title>
+                <nav_link_description>中文小马同人文站点</nav_link_description>
+              </nav_link_right>
+            </nav_link>
+          </a>
+
+          <a href="https://www.fimfiction.net/" target="_blank">
+            <nav_link>
+              <nav_link_left>
+                <img src="./assets/fimfiction.png" class="icon">
+              </nav_link_left>
+              <nav_link_right>
+                <nav_link_title>FimFiction</nav_link_title>
+                <nav_link_description>目前最大最知名的小马同人文站点</nav_link_description>
+              </nav_link_right>
+            </nav_link>
+          </a>
+
+          <a href="https://fimfetch.net/" target="_blank">
+            <nav_link>
+              <nav_link_left>
+                <img src="./assets/fimfetch.png" class="icon">
+              </nav_link_left>
+              <nav_link_right>
+                <nav_link_title>FiMFetch</nav_link_title>
+                <nav_link_description>专用于FimFiction的搜索引擎和一些其它功能</nav_link_description>
+              </nav_link_right>
+            </nav_link>
+          </a>
+
+          <a href="https://www.equestriadaily.com/2011/09/eqd-super-simple-archiver-test.html" target="_blank">
+            <nav_link>
+              <nav_link_left>
+                <img src="./assets/equestriadaily.jpg" class="icon">
+              </nav_link_left>
+              <nav_link_right>
+                <nav_link_title>EquestriaDaily Archiver</nav_link_title>
+                <nav_link_description>马国日报提供的同人文搜索过滤引擎</nav_link_description>
+              </nav_link_right>
+            </nav_link>
+          </a>
+
+          <a href="http://mlpaudiobooks.net/" target="_blank">
+            <nav_link>
+              <nav_link_left>
+                <img src="./assets/mlpaudiobooks.jpg" class="icon">
+              </nav_link_left>
+              <nav_link_right>
+                <nav_link_title>MLP Audiobooks</nav_link_title>
+                <nav_link_description>小马有声书资源站</nav_link_description>
+              </nav_link_right>
+            </nav_link>
+          </a>
+
+          <a href="https://www.ponyfictionarchive.net/" target="_blank">
+            <nav_link>
+              <nav_link_left>
+                <img src="./assets/website.png" class="icon">
+              </nav_link_left>
+              <nav_link_right>
+                <nav_link_title>Pony Fiction Archive</nav_link_title>
+                <nav_link_description>小说档案馆</nav_link_description>
+              </nav_link_right>
+            </nav_link>
+          </a>
+
+          <a href="https://www.ministryofimage.net/" target="_blank">
+            <nav_link>
+              <nav_link_left>
+                <img src="./assets/ministryofimage.png" class="icon">
+              </nav_link_left>
+              <nav_link_right>
+                <nav_link_title>Ministry of Image</nav_link_title>
+                <nav_link_description>印象部是俄罗斯高质量小马同人书籍印刷站</nav_link_description>
+              </nav_link_right>
+            </nav_link>
+          </a>
+
+          <a href="https://ponyfeatherpublishing.com/" target="_blank">
+            <nav_link>
+              <nav_link_left>
+                <img src="./assets/ponyfeatherpublishing.jpg" class="icon">
+              </nav_link_left>
+              <nav_link_right>
+                <nav_link_title>Ponyfeather Publishing</nav_link_title>
+                <nav_link_description>小马书籍出版商</nav_link_description>
+              </nav_link_right>
+            </nav_link>
+          </a>
+
+          <a href="http://book.fallout-equestria.com/" target="_blank">
+            <nav_link>
+              <nav_link_left>
+                <img src="./assets/absolutelyeverything.png" class="icon">
+              </nav_link_left>
+              <nav_link_right>
+                <nav_link_title>Absolutely Everything</nav_link_title>
+                <nav_link_description>辐射小马国及同人书籍印刷站</nav_link_description>
+              </nav_link_right>
+            </nav_link>
+          </a>
+
+          <a href="https://github.com/JockeTF/fimfarchive" target="_blank">
+            <nav_link>
+              <nav_link_left>
+                <img src="./assets/fimfarchive.jpg" class="icon">
+              </nav_link_left>
+              <nav_link_right>
+                <nav_link_title>Fimfarchive</nav_link_title>
+                <nav_link_description>FimFiction 全站小说打包收录项目</nav_link_description>
+              </nav_link_right>
+            </nav_link>
+          </a>
+
+          <a href="https://clopfic.com/" target="_blank">
+            <nav_link>
+              <nav_link_left>
+                <img src="./assets/clopfiction.jpg" class="icon">
+              </nav_link_left>
+              <nav_link_right>
+                <nav_link_title>Clopfiction</nav_link_title>
+                <nav_link_description>由 Cloppers 创作的 Clopfics</nav_link_description>
+              </nav_link_right>
+            </nav_link>
+          </a>
+
+          <a href="https://royalcanterlotlibrary.net/" target="_blank">
+            <nav_link>
+              <nav_link_left>
+                <img src="./assets/royalcanterlotlibrary.jpg" class="icon">
+              </nav_link_left>
+              <nav_link_right>
+                <nav_link_title>Royal Canterlot Library</nav_link_title>
+                <nav_link_description>中心城皇家图书馆，好书推荐</nav_link_description>
+              </nav_link_right>
+            </nav_link>
+          </a>
+
+          <a href="https://www.hollowshades.com/" target="_blank">
+            <nav_link>
+              <nav_link_left>
+                <img src="./assets/talesfromhollowshades.jpg" class="icon">
+              </nav_link_left>
+              <nav_link_right>
+                <nav_link_title>Tales from Hollow Shades</nav_link_title>
+                <nav_link_description>Monochromatic 的个人网站</nav_link_description>
+              </nav_link_right>
+            </nav_link>
+          </a>
+
+        </choice>
+
+        <!--漫画类-->
+        <choice id="navClass9">
+
+          <a href="http://manhua.dmzj.com/tags/search.shtml?s=%E5%BD%A9%E8%99%B9%E5%B0%8F%E9%A9%AC" target="_blank">
+            <nav_link>
+              <nav_link_left>
+                <img src="./assets/dongmanzhijia.png" class="icon">
+              </nav_link_left>
+              <nav_link_right>
+                <nav_link_title>小马官漫</nav_link_title>
+                <nav_link_description>中文漫画</nav_link_description>
+              </nav_link_right>
+            </nav_link>
+          </a>
+
+          <a href="https://www.canterlotcomics.com/" target="_blank">
+            <nav_link>
+              <nav_link_left>
+                <img src="./assets/canterlotcomics.png" class="icon">
+              </nav_link_left>
+              <nav_link_right>
+                <nav_link_title>Canterlot Comics</nav_link_title>
+                <nav_link_description>法语网站，同人小马漫画</nav_link_description>
+              </nav_link_right>
+            </nav_link>
+          </a>
+
+          <a href="https://spaceponyos.com/" target="_blank">
+            <nav_link>
+              <nav_link_left>
+                <img src="./assets/spaceponyos.png" class="icon">
+              </nav_link_left>
+              <nav_link_right>
+                <nav_link_title>Space Ponyos</nav_link_title>
+                <nav_link_description>Space Ponyos 专网</nav_link_description>
+              </nav_link_right>
+            </nav_link>
+          </a>
+
+          <a href="http://friendshipisdragons.com/" target="_blank">
+            <nav_link>
+              <nav_link_left>
+                <img src="./assets/friendshipisdragons.png" class="icon">
+              </nav_link_left>
+              <nav_link_right>
+                <nav_link_title>Friendship is Dragons</nav_link_title>
+                <nav_link_description>友谊是巨龙</nav_link_description>
+              </nav_link_right>
+            </nav_link>
+          </a>
+
+        </choice>
+
+        <!--维基类-->
+        <choice id="navClass10">
+
+          <a href="https://mlp.huijiwiki.com/" target="_blank">
+            <nav_link>
+              <nav_link_left>
+                <img src="./assets/mlphuijiwiki.png" class="icon">
+              </nav_link_left>
+              <nav_link_right>
+                <nav_link_title>MLP 中文维基</nav_link_title>
+                <nav_link_description>目前最全的 MLP 中文百科</nav_link_description>
+              </nav_link_right>
+            </nav_link>
+          </a>
+
+          <a href="https://mlp.fandom.com/" target="_blank">
+            <nav_link>
+              <nav_link_left>
+                <img src="./assets/mlpfandomwiki.png" class="icon">
+              </nav_link_left>
+              <nav_link_right>
+                <nav_link_title>MLP Fandom Wiki</nav_link_title>
+                <nav_link_description>Fandom 维基，部分条目有简繁中文</nav_link_description>
+              </nav_link_right>
+            </nav_link>
+          </a>
+
+          <a href="https://mlpfanart.fandom.com/" target="_blank">
+            <nav_link>
+              <nav_link_left>
+                <img src="./assets/mlpfanartwiki.png" class="icon">
+              </nav_link_left>
+              <nav_link_right>
+                <nav_link_title>MLP Fan Art Wiki</nav_link_title>
+                <nav_link_description>介绍较为知名的同人作品</nav_link_description>
+              </nav_link_right>
+            </nav_link>
+          </a>
+
+          <a href="https://falloutequestria.fandom.com/" target="_blank">
+            <nav_link>
+              <nav_link_left>
+                <img src="./assets/falloutequestriawiki.png" class="icon">
+              </nav_link_left>
+              <nav_link_right>
+                <nav_link_title>Fallout: Equestria Wiki</nav_link_title>
+                <nav_link_description>《辐射：小马国》维基</nav_link_description>
+              </nav_link_right>
+            </nav_link>
+          </a>
+
+          <a href="https://fallout-equestria-remains.fandom.com/" target="_blank">
+            <nav_link>
+              <nav_link_left>
+                <img src="./assets/falloutequestriaremainswiki.jpg" class="icon">
+              </nav_link_left>
+              <nav_link_right>
+                <nav_link_title>Fallout Equestria Remains Wiki</nav_link_title>
+                <nav_link_description>《辐射小马国：废土》游戏维基</nav_link_description>
+              </nav_link_right>
+            </nav_link>
+          </a>
+
+          <a href="https://austraeoh.huijiwiki.com/" target="_blank">
+            <nav_link>
+              <nav_link_left>
+                <img src="./assets/austraeoh.png" class="icon">
+              </nav_link_left>
+              <nav_link_right>
+                <nav_link_title>《东往之驹》中文维基</nav_link_title>
+                <nav_link_description>Imploding Colon 长篇同人系列中文资料站</nav_link_description>
+              </nav_link_right>
+            </nav_link>
+          </a>
+
+          <a href="http://www.mylittlewiki.org/" target="_blank">
+            <nav_link>
+              <nav_link_left>
+                <img src="./assets/mylittlewiki.jpg" class="icon">
+              </nav_link_left>
+              <nav_link_right>
+                <nav_link_title>My Little Wiki</nav_link_title>
+                <nav_link_description>G1 至 G4 玩具的详细介绍</nav_link_description>
+              </nav_link_right>
+            </nav_link>
+          </a>
+
+        </choice>
+
+        <!--周边类-->
+        <choice id="navClass11">
+
+          <a href="http://www.hasbro.cn/" target="_blank">
+            <nav_link>
+              <nav_link_left>
+                <img src="./assets/hasbro.png" class="icon">
+              </nav_link_left>
+              <nav_link_right>
+                <nav_link_title>孩之宝</nav_link_title>
+                <nav_link_description>孩之宝中国官网</nav_link_description>
+              </nav_link_right>
+            </nav_link>
+          </a>
+
+          <a href="https://lunarshinestore.com/" target="_blank">
+            <nav_link>
+              <nav_link_left>
+                <img src="./assets/lunarshine.png" class="icon">
+              </nav_link_left>
+              <nav_link_right>
+                <nav_link_title>LunarShine</nav_link_title>
+                <nav_link_description>月光小店，有各类同人周边</nav_link_description>
+              </nav_link_right>
+            </nav_link>
+          </a>
+
+          <a href="https://www.brony.com/" target="_blank">
+            <nav_link>
+              <nav_link_left>
+                <img src="./assets/brony.png" class="icon">
+              </nav_link_left>
+              <nav_link_right>
+                <nav_link_title>Brony</nav_link_title>
+                <nav_link_description>有T恤和口罩之类的周边</nav_link_description>
+              </nav_link_right>
+            </nav_link>
+          </a>
+
+        </choice>
+
+        <!--资源类-->
+        <choice id="navClass12">
+
+          <a href="http://yayponies.no/" target="_blank">
+            <nav_link>
+              <nav_link_left>
+                <img src="./assets/yayponies.png" class="icon">
+              </nav_link_left>
+              <nav_link_right>
+                <nav_link_title>YayPonies</nav_link_title>
+                <nav_link_description>著名小马资源站，官方同人都有部分，其中官方特别全</nav_link_description>
+              </nav_link_right>
+            </nav_link>
+          </a>
+
+          <a href="http://www.theponyarchive.com/" target="_blank">
+            <nav_link>
+              <nav_link_left>
+                <img src="./assets/theponyarchive.png" class="icon">
+              </nav_link_left>
+              <nav_link_right>
+                <nav_link_title>The Pony Archive</nav_link_title>
+                <nav_link_description>小马档案馆，存放各种同人作品，不乏被删除的珍贵资源</nav_link_description>
+              </nav_link_right>
+            </nav_link>
+          </a>
+
+          <a href="https://eqmemory.cn/" target="_blank">
+            <nav_link>
+              <nav_link_left>
+                <img src="./assets/equestriamemory.png" class="icon">
+              </nav_link_left>
+              <nav_link_right>
+                <nav_link_title>马国记忆</nav_link_title>
+                <nav_link_description>国内马迷发起的同人资源收集与整理项目</nav_link_description>
+              </nav_link_right>
+            </nav_link>
+          </a>
+
+          <a href="https://dl.gdstudio.xyz/" target="_blank">
+            <nav_link>
+              <nav_link_left>
+                <img src="./assets/dlgdstudio.png" class="icon">
+              </nav_link_left>
+              <nav_link_right>
+                <nav_link_title>GD 资源站</nav_link_title>
+                <nav_link_description>可在线观看所有小马剧集</nav_link_description>
+              </nav_link_right>
+            </nav_link>
+          </a>
+
+          <a href="https://h8cs-my.sharepoint.com/:f:/g/personal/od223_365a1_me/Era9nT62KgtIsn1qfaAKE-oBhelma5KGiTr4sPCO5E5Z-A"
+            target="_blank">
+            <nav_link>
+              <nav_link_left>
+                <img src="./assets/liuliucollection.png" class="icon">
+              </nav_link_left>
+              <nav_link_right>
+                <nav_link_title>六六的资源合辑</nav_link_title>
+                <nav_link_description>密码 Lp3TcG8S，由马迷“六六的哲学”制作的资源合辑</nav_link_description>
+              </nav_link_right>
+            </nav_link>
+          </a>
+
+          <a href="https://雪狐.com/" target="_blank">
+            <nav_link>
+              <nav_link_left>
+                <img src="./assets/xuehu.jpg" class="icon">
+              </nav_link_left>
+              <nav_link_right>
+                <nav_link_title>雪狐</nav_link_title>
+                <nav_link_description>收集了许多小马剧集视频</nav_link_description>
+              </nav_link_right>
+            </nav_link>
+          </a>
+
+          <a href="https://ponysfm.com/" target="_blank">
+            <nav_link>
+              <nav_link_left>
+                <img src="./assets/ponysfm.png" class="icon">
+              </nav_link_left>
+              <nav_link_right>
+                <nav_link_title>PonySFM</nav_link_title>
+                <nav_link_description>小马SFM建模或动画</nav_link_description>
+              </nav_link_right>
+            </nav_link>
+          </a>
+
+          <a href="https://fallout-equestria.com/" target="_blank">
+            <nav_link>
+              <nav_link_left>
+                <img src="./assets/falloutequestria.png" class="icon">
+              </nav_link_left>
+              <nav_link_right>
+                <nav_link_title>Fallout Equestria</nav_link_title>
+                <nav_link_description>《辐射：小马国》资源站</nav_link_description>
+              </nav_link_right>
+            </nav_link>
+          </a>
+
+          <a href="https://needforponies.fr/" target="_blank">
+            <nav_link>
+              <nav_link_left>
+                <img src="./assets/needforponies.png" class="icon">
+              </nav_link_left>
+              <nav_link_right>
+                <nav_link_title>Need for Ponies</nav_link_title>
+                <nav_link_description>内有小马剧集/电影/视频/漫画/音乐/<nav_link_description>
+              </nav_link_right>
+            </nav_link>
+          </a>
+
+          <a href="http://mlp-france.com/" target="_blank">
+            <nav_link>
+              <nav_link_left>
+                <img src="./assets/mlpfrance.png" class="icon">
+              </nav_link_left>
+              <nav_link_right>
+                <nav_link_title>MLP France</nav_link_title>
+                <nav_link_description>内有小马剧集/电影/漫画，以及早期小马剧集</nav_link_description>
+              </nav_link_right>
+            </nav_link>
+          </a>
+
+          <a href="http://www.newlunarrepublic.fr/" target="_blank">
+            <nav_link>
+              <nav_link_left>
+                <img src="./assets/newlunarrepublic.png" class="icon">
+              </nav_link_left>
+              <nav_link_right>
+                <nav_link_title>New Lunar Republic</nav_link_title>
+                <nav_link_description>新露娜共和国，内有小马剧集/电影/漫画</nav_link_description>
+              </nav_link_right>
+            </nav_link>
+          </a>
+
+        </choice>
+
+      </nav_links>
+
+    </nav>
+
+    <!--导入导航js-->
+    <script src="./js/selectNav.js"></script>
+
+    <!--导入设置js-->
+    <script src="./js/settings.js"></script>
+
+</body>
+
+</html>
