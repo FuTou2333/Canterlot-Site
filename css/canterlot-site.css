@@ -33,6 +33,17 @@ a {
   text-decoration: none;
 }
 
+/*搜索框上面的标题*/
+big_title_container {
+  margin-top: 60px;
+  margin-bottom: 25px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: white;
+  font-size: 13px;
+}
+
 /*搜索引擎*/
 .searchEngine {
   width: 500px;
