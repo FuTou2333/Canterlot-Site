@@ -9,6 +9,9 @@
   <link rel="icon" href="./assets/favicon.png">
   <link rel="stylesheet" href="./css/canterlot-site.css">
   <link rel="stylesheet" href="./css/canterlot-site-dark.css">
+
+  <!--不蒜子访问量统计脚本-->
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 </head>
 
 <body id="body">
@@ -127,8 +130,20 @@
 
     </bar_top>
 
-    <!--时间显示-->
-    <p id="displayTime" style="color:white;font-size: 35px;margin-top:60px;margin-bottom: 25px;"></p>
+    <!--搜索框上面的标题-->
+    <big_title_container>
+      <!--时间显示-->
+      <span id="displayTime" style="font-size: 35px;"></span>
+      <!--显示访问次数和独立IP访问量-->
+      <span style="font-weight: bold;">
+        <span id="busuanzi_container_site_pv" style="margin-right:10px;">
+          访问量：<span id="busuanzi_value_site_pv"></span>
+        </span>
+        <span id="busuanzi_container_site_uv">
+          访客量：<span id="busuanzi_value_site_uv"></span>
+        </span>
+      </span>
+    </big_title_container>
 
     <!--时间显示js-->
     <script>
