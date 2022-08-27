@@ -8,7 +8,7 @@
 body {
   margin: 0;
   display: flex;
-  background-image: url(https://api.kdcc.cn/);
+  background-image: url(https://api.kdcc.cn/img/jump.php);
   background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;
