@@ -90,7 +90,7 @@ function change_darkMode() {
 meiRiYiTuTag.addEventListener("change", setMeiRiYiTu);
 function setMeiRiYiTu() {
   ziDingYiInputDivTag.style.display = "none";
-  bodyTag.style.backgroundImage = "url(https://api.kdcc.cn/)";
+  bodyTag.style.backgroundImage = "url(https://api.kdcc.cn/img/jump.php)";
   window.localStorage.setItem("backgroundImage", "每日一图");
 }
 
