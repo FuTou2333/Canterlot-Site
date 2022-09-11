@@ -222,7 +222,7 @@ nav_link:hover {
   transition-duration: 0.1s;
 }
 
-/*导航卡片-点击变小*/
+/*导航卡片-点击缩放*/
 nav_link:active {
   transform: scale(0.97, 0.97);
   transition-duration: 0.1s;
@@ -255,75 +255,6 @@ nav_link_right {
 nav_link_description {
   font-size: 14px;
   color: #9c9c9c;
-}
-
-/*纯文字板块*/
-.common {
-  margin: 30px;
-}
-
-/*纯文字板块の标题*/
-.common_title {
-  font-weight: bold;
-  font-size: 25px;
-  padding-bottom: 8px;
-  border-bottom: 4px solid #000000;
-}
-
-/*纯文字板块の二级标题*/
-.common_title_2 {
-  display: flex;
-  font-size: 23px;
-  margin-bottom: 8px;
-  justify-content: space-between;
-}
-
-/*纯文字板块の三级标题（更新日志日期）*/
-.common_title_3 {
-  font-size: 15px;
-  margin-bottom: 8px;
-  color: #9c9c9c;
-}
-
-/*纯文字板块の主体*/
-.common_text {
-  margin-top: 10px;
-  font-size: 16px;
-  line-height: 1.4;
-  letter-spacing: 0.8px;
-}
-
-/*“关于本站”页面の按钮*/
-.about_button {
-  display: flex;
-  align-items: center;
-  background: transparent;
-  border: 1.5px solid #000000;
-  outline: none;
-  border-radius: 5px;
-  font-size: 16px;
-  padding: 10px;
-  transition-duration: 0.2s;
-  cursor: pointer;
-  margin-right: 10px;
-  width: auto;
-  color: #000000;
-}
-
-.about_button:hover {
-  background-color: #00000013;
-  transition-duration: 0.2s;
-}
-
-/*更新日志の一个版本*/
-version {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 20px;
-  border-radius: 5px;
-  background-color: #ffffff;
-  padding: 20px;
-  box-shadow: #0000001f 0px 4px 16px;
 }
 
 /*设置菜单*/
@@ -367,7 +298,7 @@ settings_option {
   margin-bottom: 10px;
 }
 
-/*设置菜单的一项的表单元素*/
+/*设置菜单的表单元素*/
 .settings_form {
   height: 18px;
   width: 18px;
@@ -382,7 +313,7 @@ settings_option {
   width: 100px;
 }
 
-/*应用背景按钮*/
+/*“应用背景”按钮*/
 .applyBackgroundButton {
   margin-left: 2px;
 }
@@ -435,12 +366,12 @@ settings_option {
     background: transparent;
   }
 
-  /*取消导航卡片点击时弹一下的效果，移动端效果不好*/
+  /*取消导航卡片点击时缩放效果，移动端效果不好*/
   nav_link:active {
     transform: scale(1, 1);
   }
 
-  /*导航卡片宽度自适应*/
+  /*宽度自适应*/
   choice {
     flex-direction: column;
     flex-wrap: nowrap;
