@@ -11,7 +11,7 @@ a {
 /*搜索引擎*/
 .searchEngine {
   background-color: #1e1e1e;
-  box-shadow: #00000000 0px 0px 0px;
+  box-shadow: none;
   color: white;
 }
 
@@ -22,14 +22,14 @@ a {
 /*导航主区*/
 nav {
   background-color: #1e1e1e;
-  box-shadow: #00000000 0px 0px 0px;
+  box-shadow: none;
 }
 
 /*导航卡片*/
 nav_link {
   background-color: #ffffff12;
   color: #ffffff;
-  box-shadow: #00000000 0px 0px 0px;
+  box-shadow: none;
 }
 
 /*导航卡片-悬浮变色*/
@@ -51,7 +51,7 @@ settings {
 /*设置菜单的一个类别*/
 settings_class {
   background-color: #ffffff12;
-  box-shadow: #00000000 0px 0px 0px;
+  box-shadow: none;
 }
 
 /*设置菜单的一个类别的标题*/
@@ -68,7 +68,7 @@ settings_title {
 .settings_button {
   color: #ffffff;
   background-color: #ffffff12;
-  box-shadow: #00000000 0px 0px 0px;
+  box-shadow: none;
 }
 
 .settings_button:hover {

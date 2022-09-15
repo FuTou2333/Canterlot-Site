@@ -1,3 +1,9 @@
+/*css全局变量*/
+:root {
+  --small-shadow: #00000014 0px 2px 8px;
+  --big-shadow: #00000014 0px 2px 16px;
+}
+
 /*选择所有元素*/
 * {
   /*为了让手机端点击不出现蓝色高光*/
@@ -54,7 +60,7 @@ big_title_container {
   padding-left: 35px;
   padding-right: 45px;
   font-size: 16px;
-  box-shadow: #0000001f 0px 4px 20px;
+  box-shadow: var(--small-shadow);
   transition-duration: 0.2s;
 }
 
@@ -181,7 +187,7 @@ nav {
   background-color: #f7f8f9eb;
   border-radius: 5px;
   padding: 10px;
-  box-shadow: #0000001f 0px 4px 20px;
+  box-shadow: var(--big-shadow);
   min-height: 500px;
 }
 
@@ -213,7 +219,7 @@ nav_link {
   transition-duration: 0.1s;
   width: 310px;
   height: 60px;
-  box-shadow: #0000001f 0px 4px 8px;
+  box-shadow: var(--small-shadow);
 }
 
 /*导航卡片-悬浮变色*/
@@ -264,7 +270,7 @@ settings {
   flex-direction: column;
   background-color: #f7f8f9eb;
   border-radius: 5px;
-  box-shadow: #0000001f 0px 4px 20px;
+  box-shadow: var(--big-shadow);
   position: absolute;
   top: 57px;
   right: 10px;
@@ -282,7 +288,7 @@ settings_class {
   margin-bottom: 10px;
   padding: 10px;
   border-radius: 5px;
-  box-shadow: #0000001f 0px 4px 8px;
+  box-shadow: var(--small-shadow);
 }
 
 /*设置菜单的一个类别的标题*/
@@ -333,7 +339,7 @@ settings_option {
   flex: 1;
   color: #000000;
   background-color: #ffffff;
-  box-shadow: #0000001f 0px 4px 8px;
+  box-shadow: var(--small-shadow);
 }
 
 .settings_button:hover {
@@ -343,6 +349,8 @@ settings_option {
 
 /*移动端适配*/
 @media (max-width: 600px) {
+
+
 
   /*宽度适配*/
   .searchEngine {
@@ -356,6 +364,17 @@ settings_option {
   nav_select {
     width: 90%;
   }
+
+  choice {
+    flex-direction: column;
+    flex-wrap: nowrap;
+  }
+
+  nav_link {
+    width: unset;
+  }
+
+
 
   /*把以下元素hover的颜色设为原来的，相当于没有*/
   nav_link:hover {
@@ -371,13 +390,24 @@ settings_option {
     transform: scale(1, 1);
   }
 
-  /*宽度自适应*/
-  choice {
-    flex-direction: column;
-    flex-wrap: nowrap;
+
+
+  /*调小导航卡片及导航区域的边距*/
+  nav_link {
+    margin: 8px;
   }
 
-  nav_link {
-    width: unset;
+  nav {
+    padding: 8px;
   }
+
+
+
+  /*调整导航卡片阴影*/
+  nav_link {
+    box-shadow: #00000010 0px 2px 4px;
+  }
+
+
+
 }
