@@ -1,7 +1,7 @@
 /*css全局变量*/
 :root {
-  --small-shadow: #00000014 0px 2px 8px;
-  --big-shadow: #00000014 0px 2px 16px;
+  --small-shadow: #00000018 0px 2px 8px;
+  --big-shadow: #00000018 0px 2px 16px;
 }
 
 /*选择所有元素*/
@@ -14,7 +14,6 @@
 body {
   margin: 0;
   display: flex;
-  background-image: url(https://api.kdcc.cn/img/jump.php);
   background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;
@@ -181,7 +180,7 @@ nav_select {
 
 /*导航主区*/
 nav {
-  display: flex;
+  display: none;
   flex-direction: column;
   width: 800px;
   background-color: #f7f8f9eb;
@@ -199,7 +198,7 @@ nav_links {
 
 /*导航的一个类*/
 choice {
-  display: flex;
+  display: none;
   flex-wrap: wrap;
   width: 100%;
   justify-content: center;
