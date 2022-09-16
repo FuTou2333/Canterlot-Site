@@ -21,6 +21,7 @@ body {
   font-family: 微软雅黑;
   flex-direction: column;
   transition-duration: 1s;
+  height: 100vh;
 }
 
 /*页面主体*/
@@ -31,6 +32,7 @@ main {
   align-items: center;
   background-color: #0000002f;
   transition-duration: 1s;
+  height: 100%;
 }
 
 /*超链接*/
@@ -169,7 +171,7 @@ bar_top {
 
 /*导航分类区*/
 nav_select {
-  display: flex;
+  display: none;
   flex-direction: row;
   height: auto;
   width: 800px;
