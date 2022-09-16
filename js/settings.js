@@ -153,6 +153,7 @@ function setDefultSettings() {
     window.localStorage.removeItem("searchEngine");
     window.localStorage.removeItem("darkMode");
     window.localStorage.removeItem("backgroundImage");
+    window.localStorage.removeItem("backgroundImageURL");
     window.localStorage.removeItem("xianShiDaoHang");
     window.localStorage.removeItem("xianShiTianQi");
     window.location.reload(); //刷新页面
