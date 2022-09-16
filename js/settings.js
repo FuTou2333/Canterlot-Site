@@ -193,6 +193,8 @@ if (backgroundImageData) {
     setziDingYi();
     applyBackgroundImage();
   }
+} else { //如果第一次进入页面，数据库中没有数据就设置成默认效果
+  setMeiRiYiTu();
 }
 
 //页面布局设置数据库
@@ -205,6 +207,9 @@ if (xianShiDaoHangData) {
     xianShiDaoHang = false;
     change_xianShiDaoHang();
   }
+} else { //如果第一次进入页面，数据库中没有数据就设置成默认效果
+  xianShiDaoHang = true;
+  change_xianShiDaoHang();
 }
 
 let xianShiTianQiData = window.localStorage.getItem("xianShiTianQi");
@@ -216,4 +221,7 @@ if (xianShiTianQiData) {
     xianShiTianQi = false;
     change_xianShiTianQi();
   }
+} else {
+  xianShiTianQi = true;
+  change_xianShiTianQi();
 }
