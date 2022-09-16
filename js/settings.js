@@ -194,7 +194,11 @@ if (backgroundImageData) {
     setziDingYi();
     applyBackgroundImage();
   }
-} else { //如果第一次进入页面，数据库中没有数据就设置成默认效果
+/*
+以下这种代码作用是：当数据库中没有数据时，把css中留空的东西用js设置
+（但由于调用了上面的函数会写入localStorage，不用管，没有影响）
+*/
+} else {
   setMeiRiYiTu();
 }
 
@@ -208,7 +212,7 @@ if (xianShiDaoHangData) {
     xianShiDaoHang = false;
     change_xianShiDaoHang();
   }
-} else { //如果第一次进入页面，数据库中没有数据就设置成默认效果
+} else {
   xianShiDaoHang = true;
   change_xianShiDaoHang();
 }
