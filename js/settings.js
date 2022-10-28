@@ -99,11 +99,11 @@ ziDingYiTag.addEventListener("change", setziDingYi);
 function setziDingYi() {
   ziDingYiTag.checked = true; //勾选“自定义”，此时“每日一图”会自动取消勾选
   ziDingYiInputDivTag.style.display = "flex";
-  window.localStorage.setItem("backgroundImage", "自定义");
 }
 
 function applyBackgroundImage() {
-  ziDingYiInputBoxValue = document.getElementById("ziDingYiInputBox").value; //将自定义背景图片链接输入框的值存入变量
+  window.localStorage.setItem("backgroundImage", "自定义");
+  let ziDingYiInputBoxValue = document.getElementById("ziDingYiInputBox").value; //将自定义背景图片链接输入框的值存入变量
   bodyTag.style.backgroundImage = "url(" + ziDingYiInputBoxValue + ")";
   window.localStorage.setItem("backgroundImageURL", ziDingYiInputBoxValue);
 }
@@ -194,10 +194,10 @@ if (backgroundImageData) {
     setziDingYi();
     applyBackgroundImage();
   }
-/*
-以下这种代码作用是：当数据库中没有数据时，把css中留空的东西用js设置
-（但由于调用了上面的函数会写入localStorage，不用管，没有影响）
-*/
+  /*
+  以下这种代码作用是：当数据库中没有数据时，把css中留空的东西用js设置
+  （但由于调用了上面的函数会写入localStorage，不用管，没有影响）
+  */
 } else {
   setMeiRiYiTu();
 }
