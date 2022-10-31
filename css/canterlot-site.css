@@ -125,7 +125,7 @@ bar_top {
   align-items: center;
 }
 
-/*顶部导航条按钮*/
+/*顶部导航条的按钮*/
 .bar_top_links {
   color: #ffffff;
   display: flex;
