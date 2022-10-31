@@ -125,7 +125,7 @@ bar_top {
   align-items: center;
 }
 
-/*顶部导航条の按钮*/
+/*顶部导航条按钮*/
 .bar_top_links {
   color: #ffffff;
   display: flex;
@@ -226,12 +226,6 @@ nav_link {
 /*导航卡片-悬浮变色*/
 nav_link:hover {
   background-color: #ffffffa9;
-  transition-duration: 0.1s;
-}
-
-/*导航卡片-点击缩放*/
-nav_link:active {
-  transform: scale(0.97, 0.97);
   transition-duration: 0.1s;
 }
 
@@ -385,13 +379,6 @@ settings_option {
   .bar_top_links:hover {
     background: transparent;
   }
-
-  /*取消导航卡片点击时缩放效果，移动端效果不好*/
-  nav_link:active {
-    transform: scale(1, 1);
-  }
-
-
 
   /*调小导航卡片及导航区域的边距*/
   nav_link {
