@@ -49,8 +49,10 @@
       </script>
       <script src="https://widget.qweather.net/simple/static/js/he-simple-common.js?v=2.0"></script>
 
-      <!--设置菜单按钮-->
-      <a class="bar_top_links" id="settingsButton" onclick="changeSettings()" style="user-select:none;">⚙</a>
+      <!--设置菜单按钮，外面套一个盒子，防止隐藏天气后设置按钮跑到左边去（因为space-between）-->
+      <bar_top_right style="display: flex;align-items: center;width:100%;justify-content: flex-end;user-select:none;">
+        <a class="bar_top_links" id="settingsButton" onclick="changeSettings()">⚙</a>
+      </bar_top_right>
 
       <!--设置菜单-->
       <settings id="settings">
