@@ -19,7 +19,6 @@ let ziDingYiTag = document.getElementById("ziDingYi"); //背景设置-自定义�
 let ziDingYiInputDivTag = document.getElementById("ziDingYiInputDiv"); //背景设置-自定义输入部分
 let ziDingYiInputBoxTag = document.getElementById("ziDingYiInputBox"); //背景设置-自定义背景图片链接输入框
 let xianShiDaoHangTag = document.getElementById("xianShiDaoHang"); //页面布局设置-显示导航勾选框
-let xianShiTianQiTag = document.getElementById("xianShiTianQi"); //页面布局设置-显示天气勾选框
 
 //设置菜单显示隐藏
 let displaySettings = true; //css中本来就隐藏了，而且点了按钮才会触发检测函数，所以这里为true
@@ -111,7 +110,6 @@ function applyBackgroundImage() {
 //页面布局设置
 
 let xianShiDaoHang = false;
-let xianShiTianQi = false;
 
 //显示导航
 function change_xianShiDaoHang() {
@@ -133,29 +131,34 @@ function change_xianShiDaoHang() {
   xianShiDaoHang = !xianShiDaoHang;
 }
 
-//显示天气
-function change_xianShiTianQi() {
-  if (xianShiTianQi) {
-    xianShiTianQiTag.checked = true; //勾选“显示天气”
-    weatherTag.style.display = "block";
-    window.localStorage.setItem("xianShiTianQi", "是");
+let ElementData = {}
+
+let beControlledElementIds = ["xianShiTianQi", "xianShiFangWenLiang"];//对不同的元素分别创建对象
+for (i = 0; i < beControlledElementIds.length; i++) {
+  ElementData[beControlledElementIds[i]] = {};
+  ElementData[beControlledElementIds[i]]["show"] = false;
+}
+
+//控制元素显示或隐藏
+function changeElementHideOrShow(ElementId) {
+  ElementData[ElementId]["ControlCheckBoxTag"] = document.getElementById(ElementId);
+  ElementData[ElementId]["TargetTag"] = document.getElementById(ElementId + "_Target");
+  if (ElementData[ElementId]["show"]) {
+    ElementData[ElementId]["ControlCheckBoxTag"].checked = true; //勾选设置菜单中的勾选框
+    ElementData[ElementId]["TargetTag"].style.display = "flex"; //显示目标元素
+    window.localStorage.setItem(ElementId, "是");
   } else {
-    xianShiTianQiTag.checked = false; //取消勾选“显示天气”
-    weatherTag.style.display = "none";
-    window.localStorage.setItem("xianShiTianQi", "否");
+    ElementData[ElementId]["ControlCheckBoxTag"].checked = false; //取消勾选设置菜单中的勾选框
+    ElementData[ElementId]["TargetTag"].style.display = "none"; //隐藏目标元素
+    window.localStorage.setItem(ElementId, "否");
   }
-  xianShiTianQi = !xianShiTianQi;
+  ElementData[ElementId]["show"] = !ElementData[ElementId]["show"];
 }
 
 //恢复默认设置
 function setDefultSettings() {
   if (confirm("确定恢复默认？")) {
-    window.localStorage.removeItem("searchEngine");
-    window.localStorage.removeItem("darkMode");
-    window.localStorage.removeItem("backgroundImage");
-    window.localStorage.removeItem("backgroundImageURL");
-    window.localStorage.removeItem("xianShiDaoHang");
-    window.localStorage.removeItem("xianShiTianQi");
+    window.localStorage.clear();
     window.location.reload(); //刷新页面
   }
 }
@@ -176,7 +179,7 @@ if (darkModeData) {
     darkMode.checked = true;
     disableDarkMode = false;
     change_darkMode();
-  } else if (darkModeData === "否") {
+  } else {
     darkMode.checked = false;
     disableDarkMode = true;
     change_darkMode();
@@ -208,7 +211,7 @@ if (xianShiDaoHangData) {
   if (xianShiDaoHangData === "是") {
     xianShiDaoHang = true;
     change_xianShiDaoHang();
-  } else if (xianShiDaoHangData === "否") {
+  } else {
     xianShiDaoHang = false;
     change_xianShiDaoHang();
   }
@@ -217,16 +220,18 @@ if (xianShiDaoHangData) {
   change_xianShiDaoHang();
 }
 
-let xianShiTianQiData = window.localStorage.getItem("xianShiTianQi");
-if (xianShiTianQiData) {
-  if (xianShiTianQiData === "是") {
-    xianShiTianQi = true;
-    change_xianShiTianQi();
-  } else if (xianShiTianQiData === "否") {
-    xianShiTianQi = false;
-    change_xianShiTianQi();
+for (i = 0; i < beControlledElementIds.length; i++) {
+  let data = window.localStorage.getItem(beControlledElementIds[i]);
+  if (data) {
+    if (data === "是") {
+      ElementData[beControlledElementIds[i]]["show"] = true;
+      changeElementHideOrShow(beControlledElementIds[i]);
+    } else {
+      ElementData[beControlledElementIds[i]]["show"] = false;
+      changeElementHideOrShow(beControlledElementIds[i]);
+    }
+  } else {
+    ElementData[beControlledElementIds[i]]["show"] = true;
+    changeElementHideOrShow(beControlledElementIds[i]);
   }
-} else {
-  xianShiTianQi = true;
-  change_xianShiTianQi();
 }

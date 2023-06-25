@@ -20,7 +20,7 @@
     <bar_top>
 
       <!--天气组件-->
-      <div style="z-index:999;display:none;" id="weather">
+      <div style="z-index:999;display:none;" id="xianShiTianQi_Target">
         <div id="he-plugin-simple"></div>
       </div>
       <script>
@@ -101,7 +101,7 @@
           <settings_title>页面布局</settings_title>
 
           <settings_option>
-            <div id="xianShiDaoHangDiv">
+            <div>
               <input type="checkbox" class="settings_form" id="xianShiDaoHang" onclick="change_xianShiDaoHang()"
                 checked>
             </div>
@@ -109,10 +109,19 @@
           </settings_option>
 
           <settings_option>
-            <div id="xianShiDaoHangDiv">
-              <input type="checkbox" class="settings_form" id="xianShiTianQi" onclick="change_xianShiTianQi()" checked>
+            <div>
+              <input type="checkbox" class="settings_form" id="xianShiTianQi" onclick="changeElementHideOrShow(this.id)"
+                checked>
             </div>
             <span class="settings_description">显示天气</span>
+          </settings_option>
+
+          <settings_option>
+            <div>
+              <input type="checkbox" class="settings_form" id="xianShiFangWenLiang"
+                onclick="changeElementHideOrShow(this.id)" checked>
+            </div>
+            <span class="settings_description">显示访问量</span>
           </settings_option>
 
         </settings_class>
@@ -132,7 +141,7 @@
       <!--时间显示-->
       <span id="displayTime" style="font-size: 35px;"></span>
       <!--显示访问次数和独立IP访问量-->
-      <span style="font-weight: bold;">
+      <span style="font-weight: bold;display: none;" id="xianShiFangWenLiang_Target">
         <span id="busuanzi_container_site_pv" style="margin-right:10px;">
           访问量：<span id="busuanzi_value_site_pv"></span>
         </span>
