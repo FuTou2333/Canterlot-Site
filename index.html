@@ -9,6 +9,7 @@
   <meta name="description" content="坎城枢纽，小马相关网址导航站，由个人爱好者组建。">
   <link rel="icon" href="./assets/favicon.png">
   <link rel="stylesheet" href="./css/canterlot-site.css">
+  <link rel="stylesheet" href="./css/searchEngineSelectMenu.css">
   <link rel="stylesheet" href="./css/canterlot-site-dark.css">
 </head>
 
@@ -75,7 +76,7 @@
 
           <settings_title>背景</settings_title>
 
-          <form style="margin-bottom:0;">
+          <form>
 
             <settings_option>
               <input type="radio" name="background" class="settings_form" id="meiRiYiTu" checked>
@@ -126,7 +127,7 @@
 
         </settings_class>
 
-        <!--设置菜单的链接-->
+        <!--设置菜单中的按钮-->
         <div style="display:flex;justify-content: center;">
           <a class="settings_button" style="margin-right:5px;" onclick="setDefultSettings();">恢复默认</a>
           <a href="./about.html" target="_blank" class="settings_button" style="margin-left:5px;">关于本站</a>
@@ -167,26 +168,41 @@
     </script>
 
     <!--搜索框-->
-    <form action="https://www.baidu.com/s" target="_blank" id="searchEngineForm">
-      <div style="display: flex;align-items:center;margin-bottom: 110px;">
-        <!--搜索引擎图标-->
-        <img src="./assets/engineBaidu.svg" id="searchEngineIcon" style="display:flex;">
-        <!--搜索引擎下拉选择框-->
-        <select id="searchEngineSelect">
-          <option class="searchEngineSelectOption">百度</option>
-          <option class="searchEngineSelectOption">必应</option>
-          <option class="searchEngineSelectOption">Derpibooru图片</option>
-          <option class="searchEngineSelectOption">FimTale小说</option>
-          <option class="searchEngineSelectOption">EqCN资讯</option>
-        </select>
-        <!--输入框-->
-        <input class="searchEngine" name="wd" placeholder="搜索" id="searchEngineInput">
-        <!--搜索按钮-->
-        <button type="submit" class="searchEngine_button">
-          <img src="./assets/search.svg" class="searchEngine_button_img">
-        </button>
+    <div class="search_box">
+      <div class="menu">
+        <div class="menu-list">
+          <button class="menu-item" onfocus="setSearchEngine('百度')">
+            <img src="./assets/engineBaidu.svg">
+            <span>百度</span>
+          </button>
+          <button class="menu-item" onfocus="setSearchEngine('必应')">
+            <img src="./assets/engineBing.svg">
+            <span>必应</span>
+          </button>
+          <button class="menu-item" onfocus="setSearchEngine('Derpibooru图片')">
+            <img src="./assets/engineDerpibooru.svg">
+            <span>Derpibooru图片</span>
+          </button>
+          <button class="menu-item" onfocus="setSearchEngine('FimTale小说')">
+            <img src="./assets/engineFimtale.ico">
+            <span>FimTale小说</span>
+          </button>
+          <button class="menu-item" onfocus="setSearchEngine('EqCN资讯')">
+            <img src="./assets/equestriacn.ico">
+            <span>EqCN资讯</span>
+          </button>
+        </div>
       </div>
-    </form>
+      <button class="button_in_search_box" onclick="openMenu(event)" onblur="closeMenu()">
+        <img src="./assets/engineBaidu.svg" id="searchEngineIcon">
+      </button>
+      <form action="https://www.baidu.com/s" target="_blank" id="searchEngineForm">
+        <input id="searchEngineInput" name="wd">
+        <button type="submit" class="button_in_search_box">
+          <img src="./assets/search.svg" class="search_button_img">
+        </button>
+      </form>
+    </div>
 
     <!--导航分类-->
     <nav_select id="navSelect">
@@ -1603,6 +1619,9 @@
 
   <!--导入设置js-->
   <script src="./js/settings.js"></script>
+
+  <!--导入搜索引擎切换js-->
+  <script src="./js/searchEngineSelectMenu.js"></script>
 
   <!--不蒜子访问量统计脚本-->
   <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>

@@ -36,9 +36,7 @@ function changeSettings() {
 
 //搜索设置
 
-searchEngineSelectTag.addEventListener("change", setSearchEngine); //每当下拉框改变时执行setSearchEngine函数
-function setSearchEngine() {
-  let choice = searchEngineSelectTag.value;
+function setSearchEngine(choice) {
   if (choice === "百度") {
     searchEngineFormTag.action = "https://www.baidu.com/s";
     searchEngineInputTag.name = "wd";
@@ -52,12 +50,12 @@ function setSearchEngine() {
   } else if (choice === "Derpibooru图片") {
     searchEngineFormTag.action = "https://trixiebooru.org/search";
     searchEngineInputTag.name = "q";
-    searchEngineIconTag.src = "./assets/derpibooru.png";
+    searchEngineIconTag.src = "./assets/engineDerpibooru.svg";
     window.localStorage.setItem("searchEngine", "Derpibooru图片");
   } else if (choice === "FimTale小说") {
     searchEngineFormTag.action = "https://fimtale.com/topics";
     searchEngineInputTag.name = "q";
-    searchEngineIconTag.src = "./assets/fimtale.png";
+    searchEngineIconTag.src = "./assets/engineFimtale.ico";
     window.localStorage.setItem("searchEngine", "FimTale小说");
   } else if (choice === "EqCN资讯") {
     searchEngineFormTag.action = "https://www.equestriacn.com/";
@@ -168,8 +166,7 @@ function setDefultSettings() {
 //搜索设置数据库
 let searchEngineData = window.localStorage.getItem("searchEngine");
 if (searchEngineData) {
-  searchEngineSelectTag.value = searchEngineData; //将下拉框内的内容变为数据库中的内容
-  setSearchEngine();
+  setSearchEngine(searchEngineData);
 }
 
 //外观设置数据库

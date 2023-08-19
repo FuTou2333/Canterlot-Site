@@ -8,15 +8,35 @@ a {
   text-decoration: none;
 }
 
-/*搜索引擎*/
-.searchEngine {
+/*搜索框*/
+.search_box {
   background-color: #1e1e1e;
   box-shadow: none;
   color: white;
 }
 
-.searchEngine:focus {
+.search_box:focus-within {
   background-color: #222222;
+}
+
+/*搜索框内的输入框*/
+#searchEngineInput {
+  color: white;
+}
+
+/*切换搜索引擎下拉菜单*/
+.menu {
+  background-color: #1e1e1e;
+  box-shadow: var(--dark-mode-shadow);
+}
+
+/*切换搜索引擎下拉菜单中的一个选项*/
+.menu-item {
+  color: white;
+}
+
+.menu-item:hover {
+  background-color: #ffffff12;
 }
 
 /*导航主区*/
@@ -45,7 +65,7 @@ nav_link_description {
 /*设置菜单*/
 settings {
   background-color: #1e1e1e;
-  box-shadow: #00000091 0px 2px 5px;
+  box-shadow: var(--dark-mode-shadow);
 }
 
 /*设置菜单的一个类别*/
@@ -59,12 +79,12 @@ settings_title {
   color: #ffffff;
 }
 
-/*设置菜单的一项的文字*/
+/*设置菜单的一行的文字*/
 .settings_description {
   color: #ffffff;
 }
 
-/*“设置”菜单的按钮*/
+/*设置菜单中的按钮*/
 .settings_button {
   color: #ffffff;
   background-color: #ffffff12;

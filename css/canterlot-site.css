@@ -2,12 +2,20 @@
 :root {
   --small-shadow: #00000018 0px 2px 8px;
   --big-shadow: #00000018 0px 2px 16px;
+  --card-border: #ececec 0px 0px 0px 1.5px;
+  --dark-mode-shadow: #00000091 0px 2px 5px;
 }
 
 /*选择所有元素*/
 * {
   /*为了让手机端点击不出现蓝色高光*/
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+/*引入字体*/
+@font-face {
+  font-family: HarmonyOS_Sans_Regular;
+  src: url(../font/HarmonyOS_Sans_Regular.ttf);
 }
 
 /*身体*/
@@ -18,7 +26,7 @@ body {
   background-position: center center;
   background-repeat: no-repeat;
   background-attachment: fixed;
-  font-family: 微软雅黑;
+  font-family: HarmonyOS_Sans_Regular;
   flex-direction: column;
   transition-duration: 1s;
   height: 100vh;
@@ -38,6 +46,7 @@ main {
 /*超链接*/
 a {
   text-decoration: none;
+  display: flex;
 }
 
 /*搜索框上面的标题*/
@@ -51,67 +60,63 @@ big_title_container {
   font-size: 13px;
 }
 
-/*搜索引擎*/
-.searchEngine {
+/*搜索框*/
+.search_box {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 110px;
   width: 500px;
-  border: none;
   border-radius: 5px;
   height: 45px;
-  background-color: #f7f8f9d4;
-  padding-left: 35px;
-  padding-right: 45px;
-  font-size: 16px;
+  background-color: #f7f7f7d4;
   box-shadow: var(--small-shadow);
   transition-duration: 0.2s;
+  padding: 0px 15px;
 }
 
-.searchEngine:focus {
+.search_box:focus-within {
   background-color: #ffffff;
   outline: none;
   transition-duration: 0.2s;
 }
 
+/*搜索框-form标签*/
+#searchEngineForm {
+  display: flex;
+  flex: 1;
+}
+
 /*搜索引擎图标*/
 #searchEngineIcon {
-  position: relative;
-  left: 32px;
-  cursor: pointer;
   height: 20px;
   width: 20px;
   border-radius: 3px;
 }
 
-/*搜索引擎选择下拉框*/
-#searchEngineSelect {
-  position: absolute;
-  height: 20px;
-  width: 20px;
-  transform: translateX(32px);
-  background: transparent;
-  border: 0;
+/*搜索框内的输入框*/
+#searchEngineInput {
+  display: flex;
+  flex: 1;
+  border: none;
   outline: none;
-  color: transparent;
-  cursor: pointer;
+  background: transparent;
+  font-size: 16px;
+  padding: 0px 10px;
 }
 
-/*搜索引擎选择下拉框的选项*/
-.searchEngineSelectOption {
-  color: #000000;
-}
-
-/*搜索按钮*/
-.searchEngine_button {
+/*搜索框内的按钮*/
+.button_in_search_box {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
   background: transparent;
   border: none;
   padding: 0;
   cursor: pointer;
-  position: relative;
-  right: 32px;
 }
 
 /*装在搜索按钮里的图片*/
-.searchEngine_button_img {
-  display: flex;
+.search_button_img {
   height: 20px;
   width: 20px;
 }
@@ -185,14 +190,14 @@ nav {
   display: none;
   flex-direction: column;
   width: 800px;
-  background-color: #f7f8f9eb;
+  background-color: #f7f7f7;
   border-radius: 5px;
   padding: 10px;
   box-shadow: var(--big-shadow);
   min-height: 500px;
 }
 
-/*导航の链接部分*/
+/*导航的链接部分*/
 nav_links {
   display: flex;
   flex-direction: column;
@@ -216,16 +221,16 @@ nav_link {
   color: #000000;
   border-radius: 5px;
   margin: 10px;
-  padding: 10px;
+  padding: 14px;
   transition-duration: 0.1s;
   width: 310px;
-  height: 60px;
-  box-shadow: var(--small-shadow);
+  min-height: 50px;
+  box-shadow: var(--card-border);
 }
 
 /*导航卡片-悬浮变色*/
 nav_link:hover {
-  background-color: #ffffffa9;
+  background-color: #ffffff50;
   transition-duration: 0.1s;
 }
 
@@ -263,7 +268,7 @@ settings {
   display: flex;
   z-index: 99;
   flex-direction: column;
-  background-color: #f7f8f9eb;
+  background-color: #f7f7f7;
   border-radius: 5px;
   box-shadow: var(--big-shadow);
   position: absolute;
@@ -281,9 +286,15 @@ settings_class {
   flex-direction: column;
   background-color: #ffffff;
   margin-bottom: 10px;
-  padding: 10px;
+  padding: 14px;
   border-radius: 5px;
-  box-shadow: var(--small-shadow);
+  box-shadow: var(--card-border);
+}
+
+/*让设置菜单的每个类别的最后一行底部外边距为零*/
+settings_class > settings_option:last-child,
+form > settings_option:last-child {
+  margin-bottom: 0;
 }
 
 /*设置菜单的一个类别的标题*/
@@ -292,7 +303,7 @@ settings_title {
   margin-bottom: 15px;
 }
 
-/*设置菜单的一项*/
+/*设置菜单的一行*/
 settings_option {
   display: flex;
   align-items: center;
@@ -319,7 +330,7 @@ settings_option {
   margin-left: 2px;
 }
 
-/*“设置”菜单的按钮*/
+/*设置菜单中的按钮*/
 .settings_button {
   display: flex;
   align-items: center;
@@ -334,7 +345,7 @@ settings_option {
   flex: 1;
   color: #000000;
   background-color: #ffffff;
-  box-shadow: var(--small-shadow);
+  box-shadow: var(--card-border);
 }
 
 .settings_button:hover {
@@ -348,8 +359,8 @@ settings_option {
 
 
   /*宽度适配*/
-  .searchEngine {
-    width: 100%;
+  .search_box {
+    width: 70%;
   }
 
   nav {
@@ -363,6 +374,10 @@ settings_option {
   choice {
     flex-direction: column;
     flex-wrap: nowrap;
+  }
+
+  a {
+    display: block;
   }
 
   nav_link {
@@ -393,7 +408,7 @@ settings_option {
 
   /*调整导航卡片阴影*/
   nav_link {
-    box-shadow: #00000010 0px 2px 4px;
+    box-shadow: var(--card-border);
   }
 
 
