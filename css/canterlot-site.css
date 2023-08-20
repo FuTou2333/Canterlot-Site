@@ -253,7 +253,7 @@ nav_link_right {
   height: 40px;
   width: 40px;
   border-radius: 5px;
-  margin-right: 10px;
+  margin-right: 14px;
   display: flex;
 }
 
@@ -291,10 +291,10 @@ settings_class {
   box-shadow: var(--card-border);
 }
 
-/*让设置菜单的每个类别的最后一行底部外边距为零*/
+/*让设置菜单的每个类别的最后一行底部外边距变为原来的一半*/
 settings_class > settings_option:last-child,
 form > settings_option:last-child {
-  margin-bottom: 0;
+  margin-bottom: 5px;
 }
 
 /*设置菜单的一个类别的标题*/
