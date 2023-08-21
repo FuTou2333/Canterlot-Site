@@ -19,8 +19,6 @@
 
 网站图标：[https://www.deviantart.com/plainoasis/art/Canterlot-city-697785793](https://www.deviantart.com/plainoasis/art/Canterlot-city-697785793)
 
-每日一图API：[http://www.ee123.net/post/81.html](http://www.ee123.net/post/81.html)
-
 本网站使用了 HarmonyOS Sans 字体。
 
 部分图标来自iconfont。
