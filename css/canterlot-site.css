@@ -315,9 +315,7 @@ settings_option {
 .settings_form {
   height: 18px;
   width: 18px;
-  margin-right: 5px;
-  position: relative;
-  left: -4px;
+  margin-left: 0px;
 }
 
 /*背景链接输入框*/
