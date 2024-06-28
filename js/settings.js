@@ -8,7 +8,6 @@ let searchEngineIconTag = document.getElementById("searchEngineIcon"); //搜索�
 let searchEngineInputTag = document.getElementById("searchEngineInput"); //搜索框-搜索引擎输入框
 
 let navTag = document.getElementById("nav"); //导航区
-let weatherTag = document.getElementById("weather"); //天气组件
 let navSelectTag = document.getElementById("navSelect"); //导航选择区
 
 let settingsButtonTag = document.getElementById("settingsButton"); //设置菜单按钮
@@ -131,7 +130,7 @@ function change_xianShiDaoHang() {
 
 let ElementData = {}
 
-let beControlledElementIds = ["xianShiTianQi", "xianShiFangWenLiang"];//对不同的元素分别创建对象
+let beControlledElementIds = ["xianShiFangWenLiang"];//对不同的元素分别创建对象
 for (i = 0; i < beControlledElementIds.length; i++) {
   ElementData[beControlledElementIds[i]] = {};
   ElementData[beControlledElementIds[i]]["show"] = false;

@@ -20,40 +20,8 @@
     <!--顶部导航条-->
     <bar_top>
 
-      <!--天气组件-->
-      <div style="z-index:999;display:none;" id="xianShiTianQi_Target">
-        <div id="he-plugin-simple"></div>
-      </div>
-      <script>
-        WIDGET = {
-          "CONFIG": {
-            "modules": "120",
-            "background": "5",
-            "tmpColor": "FFFFFF",
-            "tmpSize": "15",
-            "cityColor": "FFFFFF",
-            "citySize": "15",
-            "aqiColor": "FFFFFF",
-            "aqiSize": "15",
-            "weatherIconSize": "23",
-            "alertIconSize": "17",
-            "padding": "10px 10px 10px 10px",
-            "shadow": "1",
-            "language": "auto",
-            "borderRadius": "5",
-            "fixed": "false",
-            "vertical": "center",
-            "horizontal": "left",
-            "key": "84361158168946eeb595281bff49c6cc"
-          }
-        }
-      </script>
-      <script src="https://widget.qweather.net/simple/static/js/he-simple-common.js?v=2.0"></script>
-
-      <!--设置菜单按钮，外面套一个盒子，防止隐藏天气后设置按钮跑到左边去（因为space-between）-->
-      <bar_top_right style="display: flex;align-items: center;width:100%;justify-content: flex-end;user-select:none;">
-        <a class="bar_top_links" id="settingsButton" onclick="changeSettings()">⚙</a>
-      </bar_top_right>
+      <!--设置菜单按钮-->
+      <a class="bar_top_links" id="settingsButton" onclick="changeSettings()">⚙</a>
 
       <!--设置菜单-->
       <settings id="settings">
@@ -104,12 +72,6 @@
           <settings_option>
             <input type="checkbox" class="settings_form" id="xianShiDaoHang" onclick="change_xianShiDaoHang()" checked>
             <span class="settings_description">显示导航</span>
-          </settings_option>
-
-          <settings_option>
-            <input type="checkbox" class="settings_form" id="xianShiTianQi" onclick="changeElementHideOrShow(this.id)"
-              checked>
-            <span class="settings_description">显示天气</span>
           </settings_option>
 
           <settings_option>
@@ -1629,7 +1591,7 @@
   <script src="./js/searchEngineSelectMenu.js"></script>
 
   <!--不蒜子访问量统计脚本-->
-  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  <!-- <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script> -->
 
 </body>
 

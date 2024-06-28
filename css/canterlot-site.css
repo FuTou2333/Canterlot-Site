@@ -127,7 +127,7 @@ bar_top {
   display: flex;
   width: 100%;
   background: transparent;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
 }
 
@@ -148,6 +148,7 @@ bar_top {
   width: 20px;
   align-items: center;
   justify-content: center;
+  user-select: none;
 }
 
 .bar_top_links:hover {
@@ -287,7 +288,7 @@ settings_class {
   flex-direction: column;
   background-color: #ffffff;
   margin-bottom: 10px;
-  padding: 10px;
+  padding: 14px;
   border-radius: 5px;
   box-shadow: var(--card-border);
 }
@@ -316,6 +317,7 @@ settings_option {
   height: 18px;
   width: 18px;
   margin-left: 0px;
+  margin-right: 10px;
 }
 
 /*背景链接输入框*/
