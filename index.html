@@ -21,7 +21,7 @@
     <bar_top>
 
       <!--设置菜单按钮-->
-      <a class="bar_top_links" id="settingsButton" onclick="changeSettings()">⚙</a>
+      <a class="bar_top_links" id="settingsButton" onclick="changeSettings()" aria-label="设置菜单按钮">⚙</a>
 
       <!--设置菜单-->
       <settings id="settings">
@@ -35,7 +35,7 @@
           <!--设置菜单的一行-->
           <settings_option>
             <input type="checkbox" class="settings_form" id="darkMode" onclick="change_darkMode()">
-            <span class="settings_description">深色模式</span>
+            <label class="settings_description" for="darkMode">深色模式</label>
           </settings_option>
 
         </settings_class>
@@ -48,12 +48,12 @@
 
             <settings_option>
               <input type="radio" name="background" class="settings_form" id="meiRiYiTu" checked>
-              <span class="settings_description">每日一图</span>
+              <label class="settings_description" for="meiRiYiTu">每日一图</label>
             </settings_option>
 
             <settings_option>
               <input type="radio" name="background" class="settings_form" id="ziDingYi">
-              <span class="settings_description">自定义</span>
+              <label class="settings_description" for="ziDingYi">自定义</label>
               <div style="display:flex;flex-direction:row;display:none;" id="ziDingYiInputDiv">
                 <input class="backgroundUrlInputBox" placeholder="输入图片链接" id="ziDingYiInputBox">
                 <button type="button" class="applyBackgroundButton" style="display:flex;align-items:center;"
@@ -71,13 +71,13 @@
 
           <settings_option>
             <input type="checkbox" class="settings_form" id="xianShiDaoHang" onclick="change_xianShiDaoHang()" checked>
-            <span class="settings_description">显示导航</span>
+            <label class="settings_description" for="xianShiDaoHang">显示导航</label>
           </settings_option>
 
           <settings_option>
             <input type="checkbox" class="settings_form" id="xianShiFangWenLiang"
               onclick="changeElementHideOrShow(this.id)" checked>
-            <span class="settings_description">显示访问量</span>
+            <label class="settings_description" for="xianShiFangWenLiang">显示访问量</label>
           </settings_option>
 
         </settings_class>
@@ -148,12 +148,12 @@
           </button>
         </div>
       </div>
-      <button class="button_in_search_box" onclick="openMenu(event)" onblur="closeMenu()">
+      <button class="button_in_search_box" onclick="openMenu(event)" onblur="closeMenu()" aria-label="切换搜索引擎">
         <img src="./assets/engineBaidu.svg" id="searchEngineIcon">
       </button>
       <form action="https://www.baidu.com/s" target="_blank" id="searchEngineForm">
-        <input id="searchEngineInput" name="wd">
-        <button type="submit" class="button_in_search_box">
+        <input id="searchEngineInput" name="wd" aria-label="输入搜索内容">
+        <button type="submit" class="button_in_search_box" aria-label="搜索按钮">
           <img src="./assets/search.svg" class="search_button_img">
         </button>
       </form>

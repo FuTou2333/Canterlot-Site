@@ -354,6 +354,11 @@ settings_option {
   transition-duration: 0.2s;
 }
 
+/*设置菜单的一行的文字*/
+.settings_description {
+  user-select: none;
+}
+
 /*移动端适配*/
 @media (max-width: 600px) {
 
