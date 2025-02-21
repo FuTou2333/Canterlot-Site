@@ -1,6 +1,6 @@
 # Canterlot-Site
 
-**坎特洛特-交通枢纽的开源仓库，仅用于非商业用途。**
+**坎特洛特-交通枢纽的源码仓库，仅用于非商业用途。**
 
 网址：[https://www.canterlot.site/mlp/](https://www.canterlot.site/mlp/)
 
