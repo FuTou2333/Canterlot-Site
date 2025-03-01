@@ -33,10 +33,11 @@ a {
 /*切换搜索引擎下拉菜单中的一个选项*/
 .menu-item {
   color: white;
+  font-family: HarmonyOS_Sans_Regular;
 }
 
 .menu-item:hover {
-  background-color: #ffffff12;
+  background-color: #2e2e2e;
 }
 
 /*导航主区*/
@@ -47,19 +48,19 @@ nav {
 
 /*导航卡片*/
 nav_link {
-  background-color: #ffffff12;
+  background-color: #2e2e2e;
   color: #ffffff;
   box-shadow: none;
 }
 
 /*导航卡片-悬浮变色*/
 nav_link:hover {
-  background-color: #ffffff18;
+  background-color: #333333;
 }
 
 /*导航卡片介绍*/
 nav_link_description {
-  color: #ffffff92;
+  color: #a6a6a6;
 }
 
 /*设置菜单*/
@@ -70,7 +71,7 @@ settings {
 
 /*设置菜单的一个类别*/
 settings_class {
-  background-color: #ffffff12;
+  background-color: #2e2e2e;
   box-shadow: none;
 }
 
@@ -87,12 +88,12 @@ settings_title {
 /*设置菜单中的按钮*/
 .settings_button {
   color: #ffffff;
-  background-color: #ffffff12;
+  background-color: #2e2e2e;
   box-shadow: none;
 }
 
 .settings_button:hover {
-  background-color: #ffffff18;
+  background-color: #333333;
 }
 
 /*移动端适配*/
@@ -100,7 +101,7 @@ settings_title {
 
   /*把以下元素hover的颜色设为原来的，相当于没有*/
   nav_link:hover {
-    background-color: #ffffff12;
+    background-color: #2e2e2e;
   }
 
 }
