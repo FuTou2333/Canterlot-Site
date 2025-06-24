@@ -28,8 +28,6 @@ body {
   background-attachment: fixed;
   font-family: HarmonyOS_Sans_Regular;
   flex-direction: column;
-  transition-duration: 1s;
-  height: 100vh;
 }
 
 /*页面主体*/
@@ -39,8 +37,9 @@ main {
   padding-bottom: 60px;
   align-items: center;
   background-color: #0000002f;
+  box-sizing: border-box;
+  min-height: 100vh;
   transition-duration: 1s;
-  height: 100%;
 }
 
 /*超链接*/
@@ -279,7 +278,9 @@ settings {
   padding: 10px;
   transform: scale(0, 0);
   transition-duration: 0.2s;
-  width: 290px;
+  width: 310px;
+  box-sizing: border-box;
+  max-width: calc(100vw - 20px);
 }
 
 /*设置菜单的一个类别*/
@@ -294,8 +295,8 @@ settings_class {
 }
 
 /*让设置菜单的每个类别的最后一行底部外边距变为原来的一半*/
-settings_class > settings_option:last-child,
-form > settings_option:last-child {
+settings_class>settings_option:last-child,
+form>settings_option:last-child {
   margin-bottom: 5px;
 }
 

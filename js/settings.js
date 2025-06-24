@@ -1,7 +1,6 @@
 //将元素存入变量
 let settingsTag = document.getElementById('settings'); //设置菜单
 let bodyTag = document.getElementById("body"); //身体
-let mainTag = document.getElementById("main"); //页面主体
 
 let searchEngineFormTag = document.getElementById("searchEngineForm"); //搜索框-form标签
 let searchEngineIconTag = document.getElementById("searchEngineIcon"); //搜索框-搜索引擎图标
@@ -115,14 +114,12 @@ function change_xianShiDaoHang() {
     navTag.style.display = "flex";
     navSelectTag.style.display = "flex";
     bodyTag.style.height = "auto";
-    mainTag.style.height = "auto";
     window.localStorage.setItem("xianShiDaoHang", "是");
   } else {
     xianShiDaoHangTag.checked = false; //取消勾选“显示导航”
     navTag.style.display = "none";
     navSelectTag.style.display = "none";
     bodyTag.style.height = "100vh";
-    mainTag.style.height = "100%";
     window.localStorage.setItem("xianShiDaoHang", "否");
   }
   xianShiDaoHang = !xianShiDaoHang;
