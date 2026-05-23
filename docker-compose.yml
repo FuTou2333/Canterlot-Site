@@ -2,13 +2,13 @@ services:
   postgres:
     image: postgres:16-alpine
     environment:
-      POSTGRES_DB: canterlot
-      POSTGRES_USER: canterlot
-      POSTGRES_PASSWORD: canterlot
+      POSTGRES_DB: ${PG_DATABASE:-canterlot}
+      POSTGRES_USER: ${PG_USER:-canterlot}
+      POSTGRES_PASSWORD: ${PG_PASSWORD:-canterlot}
     volumes:
       - ./data/pgdata:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U canterlot -d canterlot"]
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
       interval: 3s
       timeout: 3s
       retries: 10
@@ -45,15 +45,17 @@ services:
 
   app:
     build: .
+    env_file:
+      - .env
     environment:
-      PG_HOST: postgres
-      PG_PORT: "5432"
-      PG_DATABASE: canterlot
-      PG_USER: canterlot
-      PG_PASSWORD: canterlot
-      REDIS_HOST: redis
-      REDIS_PORT: "6379"
-      REDIS_DB: "0"
+      PG_HOST: ${PG_HOST:-postgres}
+      PG_PORT: ${PG_PORT:-5432}
+      PG_DATABASE: ${PG_DATABASE:-canterlot}
+      PG_USER: ${PG_USER:-canterlot}
+      PG_PASSWORD: ${PG_PASSWORD:-canterlot}
+      REDIS_HOST: ${REDIS_HOST:-redis}
+      REDIS_PORT: ${REDIS_PORT:-6379}
+      REDIS_DB: ${REDIS_DB:-0}
     depends_on:
       postgres:
         condition: service_healthy

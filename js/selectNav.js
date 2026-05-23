@@ -1,31 +1,9 @@
-// Category definitions
-var CATEGORIES = [
-  { key: 'hot',      label: '热点',   buttonId: 'navClass_hot_button' },
-  { key: 'news',     label: '资讯',   buttonId: 'navClass_news_button' },
-  { key: 'community',label: '社区',   buttonId: 'navClass_community_button' },
-  { key: 'video',    label: '视频',   buttonId: 'navClass_video_button' },
-  { key: 'game',     label: '游戏',   buttonId: 'navClass_game_button' },
-  { key: 'tool',     label: '工具',   buttonId: 'navClass_tool_button' },
-  { key: 'music',    label: '音乐',   buttonId: 'navClass_music_button' },
-  { key: 'image',    label: '图片',   buttonId: 'navClass_image_button' },
-  { key: 'fiction',  label: '小说',   buttonId: 'navClass_fiction_button' },
-  { key: 'comic',    label: '漫画',   buttonId: 'navClass_comic_button' },
-  { key: 'wiki',     label: '维基',   buttonId: 'navClass_wiki_button' },
-  { key: 'merch',    label: '周边',   buttonId: 'navClass_merch_button' },
-  { key: 'resource', label: '资源',   buttonId: 'navClass_resource_button' }
-];
-
 var navLinksContainer = document.getElementById('navLinksContainer');
+var navSelect = document.getElementById('navSelect');
 var currentCategory = 'hot';
 var allLinks = {};        // category -> [links]
 var hotLinks = [];        // hot links cache
 var buttons = {};         // category -> button element
-
-// Initialize button references
-for (var i = 0; i < CATEGORIES.length; i++) {
-  var cat = CATEGORIES[i];
-  buttons[cat.key] = document.getElementById(cat.buttonId);
-}
 
 // Fetch with timeout helper
 function fetchWithTimeout(url, options, timeoutMs) {
@@ -36,6 +14,43 @@ function fetchWithTimeout(url, options, timeoutMs) {
   return fetch(url, fetchOptions).finally(function() { clearTimeout(timer); });
 }
 
+// Fetch categories from API and build nav buttons
+function loadCategories() {
+  fetchWithTimeout('/api/categories', null, 10000)
+    .then(function(res) { return res.json(); })
+    .then(function(categories) {
+      buildNavButtons(categories);
+      // Now that buttons exist, load links
+      loadHotLinks();
+      loadAllLinks();
+      updateNavButtons('hot');
+    })
+    .catch(function(err) {
+      console.error('Failed to load categories:', err);
+    });
+}
+
+// Build nav button elements dynamically
+function buildNavButtons(categories) {
+  var html = '<a class="nav_select_links" id="navClass_hot_button" onclick="changeCategory(\'hot\')" style="color:#ff9800">热点</a>';
+  buttons = {};
+  buttons['hot'] = null; // will resolve after innerHTML
+
+  for (var i = 0; i < categories.length; i++) {
+    var cat = categories[i];
+    html += '<a class="nav_select_links" id="navClass_' + cat.key + '_button" onclick="changeCategory(\'' + cat.key + '\')">' + escapeHtml(cat.label) + '</a>';
+  }
+
+  navSelect.innerHTML = html;
+
+  // Re-initialize button references
+  buttons['hot'] = document.getElementById('navClass_hot_button');
+  for (var i = 0; i < categories.length; i++) {
+    var cat = categories[i];
+    buttons[cat.key] = document.getElementById('navClass_' + cat.key + '_button');
+  }
+}
+
 // Fetch all links from API
 function loadAllLinks() {
   fetchWithTimeout('/api/links', null, 10000)
@@ -44,10 +59,14 @@ function loadAllLinks() {
       allLinks = {};
       for (var i = 0; i < links.length; i++) {
         var link = links[i];
-        if (!allLinks[link.category]) {
-          allLinks[link.category] = [];
+        var categories = link.categories || [];
+        for (var j = 0; j < categories.length; j++) {
+          var cat = categories[j];
+          if (!allLinks[cat]) {
+            allLinks[cat] = [];
+          }
+          allLinks[cat].push(link);
         }
-        allLinks[link.category].push(link);
       }
       // Render default category (hot is handled by loadHotLinks)
       if (currentCategory !== 'hot') {
@@ -98,7 +117,7 @@ function renderCategory(category) {
     navLinksContainer.innerHTML = '<div style="padding:40px;text-align:center;color:#999;">暂无链接</div>';
     return;
   }
-  navLinksContainer.innerHTML = buildLinkCards(links, false);
+  navLinksContainer.innerHTML = buildLinkCards(links, true);
 }
 
 // Render hot links with click counts
@@ -117,8 +136,8 @@ function buildLinkCards(links, showCount) {
     var link = links[i];
     var countHtml = '';
     if (showCount && link.click_count > 0) {
-      countHtml = '<span style="font-size:12px;color:#ff9800;margin-left:8px;">'
-        + link.click_count + ' 次点击</span>';
+      countHtml = '<span style="font-size:12px;color:#ff9800;margin-left:8px;">🔥'
+        + link.click_count + '</span>';
     }
     html +=
       '<a href="' + link.url + '" target="_blank" onclick="recordClick(' + link.id + ', event)">' +
@@ -168,7 +187,5 @@ function escapeHtml(text) {
   return div.innerHTML;
 }
 
-// Initialize: load hot links as default category
-loadHotLinks();
-loadAllLinks();
-updateNavButtons('hot');
+// Initialize: load categories, then links
+loadCategories();

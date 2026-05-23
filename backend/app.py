@@ -23,36 +23,30 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(lifespan=lifespan, title="Canterlot Site API")
 
-CATEGORY_LABELS = {
-    "news": "资讯",
-    "community": "社区",
-    "video": "视频",
-    "game": "游戏",
-    "tool": "工具",
-    "music": "音乐",
-    "image": "图片",
-    "fiction": "小说",
-    "comic": "漫画",
-    "wiki": "维基",
-    "merch": "周边",
-    "resource": "资源",
-}
-
-
 @app.get("/api/links")
 async def get_links(category: str = Query(None)):
     """Get links, optionally filtered by category."""
     async with database.pg_pool.acquire() as conn:
         if category:
             rows = await conn.fetch(
-                "SELECT id, url, title, description, icon, category, click_count "
-                "FROM links WHERE category = $1 ORDER BY id",
+                "SELECT l.id, l.url, l.title, l.description, l.icon, l.click_count, "
+                "COALESCE(array_agg(lc_all.category) FILTER (WHERE lc_all.category IS NOT NULL), '{}') AS categories "
+                "FROM links l "
+                "JOIN link_categories lc ON l.id = lc.link_id "
+                "LEFT JOIN link_categories lc_all ON l.id = lc_all.link_id "
+                "WHERE lc.category = $1 "
+                "GROUP BY l.id "
+                "ORDER BY l.click_count DESC, l.id ASC",
                 category,
             )
         else:
             rows = await conn.fetch(
-                "SELECT id, url, title, description, icon, category, click_count "
-                "FROM links ORDER BY category, id"
+                "SELECT l.id, l.url, l.title, l.description, l.icon, l.click_count, "
+                "COALESCE(array_agg(lc.category) FILTER (WHERE lc.category IS NOT NULL), '{}') AS categories "
+                "FROM links l "
+                "LEFT JOIN link_categories lc ON l.id = lc.link_id "
+                "GROUP BY l.id "
+                "ORDER BY l.click_count DESC, l.id ASC"
             )
 
     return [
@@ -62,7 +56,7 @@ async def get_links(category: str = Query(None)):
             "title": row["title"],
             "description": row["description"],
             "icon": row["icon"],
-            "category": row["category"],
+            "categories": row["categories"],
             "click_count": row["click_count"],
         }
         for row in rows
@@ -74,8 +68,12 @@ async def get_hot_links(limit: int = Query(default=20, le=50)):
     """Get top links sorted by click count (hot ranking)."""
     async with database.pg_pool.acquire() as conn:
         rows = await conn.fetch(
-            "SELECT id, url, title, description, icon, category, click_count "
-            "FROM links ORDER BY click_count DESC, last_clicked_at DESC NULLS LAST, id ASC LIMIT $1",
+            "SELECT l.id, l.url, l.title, l.description, l.icon, l.click_count, "
+            "COALESCE(array_agg(lc.category) FILTER (WHERE lc.category IS NOT NULL), '{}') AS categories "
+            "FROM links l "
+            "LEFT JOIN link_categories lc ON l.id = lc.link_id "
+            "GROUP BY l.id "
+            "ORDER BY l.click_count DESC, l.last_clicked_at DESC NULLS LAST, l.id ASC LIMIT $1",
             limit,
         )
 
@@ -86,7 +84,7 @@ async def get_hot_links(limit: int = Query(default=20, le=50)):
             "title": row["title"],
             "description": row["description"],
             "icon": row["icon"],
-            "category": row["category"],
+            "categories": row["categories"],
             "click_count": row["click_count"],
         }
         for row in rows
@@ -115,10 +113,12 @@ async def record_click(link_id: int):
 
 @app.get("/api/categories")
 async def get_categories():
-    """Return available categories."""
-    return [
-        {"key": k, "label": v} for k, v in CATEGORY_LABELS.items()
-    ]
+    """Return available categories, ordered by sort_order."""
+    async with database.pg_pool.acquire() as conn:
+        rows = await conn.fetch(
+            "SELECT key, label FROM categories ORDER BY sort_order"
+        )
+    return [{"key": row["key"], "label": row["label"]} for row in rows]
 
 
 # Serve static files (HTML, CSS, JS, assets)
