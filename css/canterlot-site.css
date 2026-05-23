@@ -201,9 +201,7 @@ nav {
 /*导航的链接部分*/
 nav_links {
   display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: center;
+  flex-direction: column;
 }
 
 /*导航的一个类*/
@@ -385,26 +383,12 @@ settings_option {
     flex-wrap: nowrap;
   }
 
-  nav_links > a {
+  a {
     display: block;
-    width: 100%;
-  }
-
-  nav_links {
-    flex-direction: column;
-    width: 100%;
   }
 
   nav_link {
-    width: 100%;
-    box-sizing: border-box;
-    margin: 8px 0;
-    box-shadow: var(--card-border);
-  }
-
-  nav_link_right {
-    min-width: 0;
-    overflow: hidden;
+    width: unset;
   }
 
 
@@ -418,8 +402,20 @@ settings_option {
     background: transparent;
   }
 
+  /*调小导航卡片及导航区域的边距*/
+  nav_link {
+    margin: 8px;
+  }
+
   nav {
     padding: 8px;
+  }
+
+
+
+  /*调整导航卡片阴影*/
+  nav_link {
+    box-shadow: var(--card-border);
   }
 
 
