@@ -1,2 +1,11 @@
-assets/
-font/
+# assets/
+# font/
+
+__pycache__/
+*.pyc
+venv/
+.env
+
+# Docker
+data/
+log/
