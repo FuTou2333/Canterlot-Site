@@ -30,9 +30,6 @@ git clone <repo-url> && cd Canterlot-Site
 # 创建数据与日志目录
 mkdir -p data/pgdata log/app
 
-# 创建环境变量配置文件（按需修改密码等敏感信息）
-cp .env.example .env
-
 # 启动所有服务
 docker compose up -d --build
 ```
@@ -47,24 +44,6 @@ docker compose up -d --build
 | redis | redis:7-alpine | 6379 | Redis 缓存，用于点击计数排序 |
 | app | 本地构建 | 8000 | FastAPI 后端 + 静态文件服务 |
 | nginx | nginxinc/nginx-unprivileged:alpine | 80→8080 | 反向代理，非 root 运行 |
-
-### 数据备份与恢复
-
-```bash
-# 导出数据库为 SQL 文件（包含分类、链接、点击量）
-docker compose exec -T app python export_data.py > backup.sql
-
-# 导出不含点击量数据（仅结构和元数据）
-docker compose exec -T app python export_data.py --no-click-count > backup.sql
-
-# 恢复数据（导入 SQL 文件）
-docker compose exec -T app python import_data.py - < backup.sql
-
-# 验证 SQL 文件格式（不实际执行）
-docker compose exec -T app python import_data.py --dry-run - < backup.sql
-```
-
-导入操作在单个事务中执行，失败时自动回滚，不会损坏现有数据。
 
 ### 常用命令
 
@@ -105,14 +84,9 @@ docker compose down -v
 
 ### 数据库初始化
 
-容器首次启动时自动执行 `python init_db.py`，导入两类数据：
+容器首次启动时自动执行 `python init_db.py`，从 `backend/seed_data.json` 导入种子数据。
 
-| 配置文件 | 对应表 | 说明 |
-|---|---|---|
-| `backend/categories.json` | `categories` | 导航分类定义（key、名称、排序） |
-| `backend/seed_data.json` | `links` + `link_categories` | 链接数据（标题、URL、图标、分类） |
-
-手动增量更新（只新增/更新变化的部分，不删除现有数据）：
+手动重新导入（不删除现有数据）：
 
 ```bash
 docker compose exec app python init_db.py --update
@@ -126,11 +100,7 @@ docker compose down && rm -rf data/pgdata && docker compose up -d --build
 
 ### 环境变量
 
-所有配置通过 `.env` 文件管理。模板文件为 `.env.example`，首次部署时复制并修改：
-
-```bash
-cp .env.example .env
-```
+应用容器支持以下环境变量（在 `docker-compose.yml` 中配置）：
 
 | 变量 | 默认值 | 说明 |
 |---|---|---|
@@ -142,12 +112,6 @@ cp .env.example .env
 | `REDIS_HOST` | redis | Redis 主机 |
 | `REDIS_PORT` | 6379 | Redis 端口 |
 | `REDIS_DB` | 0 | Redis 数据库编号 |
-
-修改变量后需重启服务生效：
-
-```bash
-docker compose down && docker compose up -d
-```
 
 ## 更多信息
 本网站部分代码来自：[https://github.com/team-xc/right-click-menu](https://github.com/team-xc/right-click-menu)

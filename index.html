@@ -159,8 +159,22 @@
       </form>
     </div>
 
-    <!--导航分类（按钮由 JS 动态生成）-->
-    <nav_select id="navSelect"></nav_select>
+    <!--导航分类-->
+    <nav_select id="navSelect">
+      <a class="nav_select_links" id="navClass_hot_button" onclick="changeCategory('hot')" style="color:#ff9800">热点</a>
+      <a class="nav_select_links" id="navClass_news_button" onclick="changeCategory('news')">资讯</a>
+      <a class="nav_select_links" id="navClass_community_button" onclick="changeCategory('community')">社区</a>
+      <a class="nav_select_links" id="navClass_video_button" onclick="changeCategory('video')">视频</a>
+      <a class="nav_select_links" id="navClass_game_button" onclick="changeCategory('game')">游戏</a>
+      <a class="nav_select_links" id="navClass_tool_button" onclick="changeCategory('tool')">工具</a>
+      <a class="nav_select_links" id="navClass_music_button" onclick="changeCategory('music')">音乐</a>
+      <a class="nav_select_links" id="navClass_image_button" onclick="changeCategory('image')">图片</a>
+      <a class="nav_select_links" id="navClass_fiction_button" onclick="changeCategory('fiction')">小说</a>
+      <a class="nav_select_links" id="navClass_comic_button" onclick="changeCategory('comic')">漫画</a>
+      <a class="nav_select_links" id="navClass_wiki_button" onclick="changeCategory('wiki')">维基</a>
+      <a class="nav_select_links" id="navClass_merch_button" onclick="changeCategory('merch')">周边</a>
+      <a class="nav_select_links" id="navClass_resource_button" onclick="changeCategory('resource')">资源</a>
+    </nav_select>
 
     <!--导航-->
     <nav id="nav">

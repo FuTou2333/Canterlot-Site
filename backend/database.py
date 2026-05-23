@@ -33,6 +33,7 @@ async def init_pg():
                 title TEXT NOT NULL,
                 description TEXT NOT NULL DEFAULT '',
                 icon TEXT NOT NULL DEFAULT './assets/website.png',
+                category TEXT NOT NULL,
                 click_count INTEGER NOT NULL DEFAULT 0,
                 last_clicked_at TIMESTAMPTZ,
                 created_at TIMESTAMPTZ DEFAULT NOW()
@@ -46,54 +47,7 @@ async def init_pg():
                     ALTER TABLE links ADD CONSTRAINT links_url_key UNIQUE (url);
                 END IF;
             END $$;
-
-            CREATE TABLE IF NOT EXISTS categories (
-                key TEXT PRIMARY KEY,
-                label TEXT NOT NULL,
-                sort_order INTEGER NOT NULL DEFAULT 0
-            );
-
-            CREATE TABLE IF NOT EXISTS link_categories (
-                link_id INTEGER NOT NULL REFERENCES links(id) ON DELETE CASCADE,
-                category TEXT NOT NULL,
-                PRIMARY KEY (link_id, category)
-            );
-
-            -- Migrate existing single-category data into the join table
-            DO $$
-            BEGIN
-                IF EXISTS (
-                    SELECT 1 FROM information_schema.columns
-                    WHERE table_name = 'links' AND column_name = 'category'
-                ) THEN
-                    INSERT INTO link_categories (link_id, category)
-                    SELECT id, category FROM links WHERE category IS NOT NULL
-                    ON CONFLICT DO NOTHING;
-
-                    ALTER TABLE links DROP COLUMN category;
-                END IF;
-            END $$;
-
-            -- Ensure all referenced categories exist before adding FK
-            INSERT INTO categories (key, label)
-            SELECT DISTINCT category, category FROM link_categories
-            WHERE category NOT IN (SELECT key FROM categories)
-            ON CONFLICT DO NOTHING;
-
-            -- Add FK from link_categories to categories (if not exists)
-            DO $$
-            BEGIN
-                IF NOT EXISTS (
-                    SELECT 1 FROM pg_constraint WHERE conname = 'link_categories_category_fkey'
-                ) THEN
-                    ALTER TABLE link_categories
-                    ADD CONSTRAINT link_categories_category_fkey
-                    FOREIGN KEY (category) REFERENCES categories(key) ON DELETE CASCADE;
-                END IF;
-            END $$;
-
-            DROP INDEX IF EXISTS idx_links_category;
-            CREATE INDEX IF NOT EXISTS idx_link_categories_category ON link_categories(category);
+            CREATE INDEX IF NOT EXISTS idx_links_category ON links(category);
             CREATE INDEX IF NOT EXISTS idx_links_click_count ON links(click_count DESC);
             CREATE INDEX IF NOT EXISTS idx_links_last_clicked ON links(click_count DESC, last_clicked_at DESC NULLS LAST);
         """)
