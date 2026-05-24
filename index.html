@@ -61,6 +61,11 @@
               </div>
             </settings_option>
 
+            <settings_option>
+              <input type="radio" name="background" class="settings_form" id="chunSeBeiJing">
+              <label class="settings_description" for="chunSeBeiJing">纯色背景</label>
+            </settings_option>
+
           </form>
 
         </settings_class>
@@ -95,7 +100,7 @@
     <!--搜索框上面的标题-->
     <big_title_container>
       <!--时间显示-->
-      <span id="displayTime" style="font-size: 35px;"></span>
+      <span id="displayTime" style="font-size: 46px;font-family: 'HarmonyOS_Sans_Regular';"></span>
       <!--显示访问次数和独立IP访问量-->
       <span style="font-weight: bold;display: none;" id="xianShiFangWenLiang_Target">
         <span id="busuanzi_container_site_pv" style="margin-right:10px;">
@@ -159,11 +164,11 @@
       </form>
     </div>
 
-    <!--导航分类（按钮由 JS 动态生成）-->
-    <nav_select id="navSelect"></nav_select>
-
     <!--导航-->
     <nav id="nav">
+
+      <!--导航分类（按钮由 JS 动态生成）-->
+      <nav_select id="navSelect"></nav_select>
 
       <!--导航链接-->
       <nav_links id="navLinksContainer">

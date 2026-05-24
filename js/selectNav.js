@@ -170,11 +170,11 @@ function updateNavButtons(category) {
   for (var key in buttons) {
     if (buttons[key]) {
       if (key === category) {
-        buttons[key].style.borderBottom = '3px solid #a3def8';
-        buttons[key].style.color = key === 'hot' ? '#ff9800' : '#a3def8';
+        buttons[key].style.borderBottom = '3px solid rgb(70, 134, 163)';
+        buttons[key].style.color = key === 'hot' ? '#ff9800' : 'rgb(70, 134, 163)';
       } else {
         buttons[key].style.borderBottom = '3px solid #ffffff00';
-        buttons[key].style.color = key === 'hot' ? '#ff9800' : 'white';
+        buttons[key].style.color = key === 'hot' ? '#ff9800' : '';
       }
     }
   }

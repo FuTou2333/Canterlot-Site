@@ -26,7 +26,7 @@ body {
   background-position: center center;
   background-repeat: no-repeat;
   background-attachment: fixed;
-  font-family: HarmonyOS_Sans_Regular;
+  font-family: HarmonyOS_Sans_Regular, 微软雅黑;
   flex-direction: column;
 }
 
@@ -40,6 +40,21 @@ main {
   box-sizing: border-box;
   min-height: 100vh;
   transition-duration: 1s;
+  backdrop-filter: blur(100px);
+}
+
+/*纯色背景模式*/
+body.solid-background {
+  background-color: #e8ecf1;
+}
+
+body.solid-background main {
+  backdrop-filter: none;
+  background-color: transparent;
+}
+
+body.solid-background big_title_container {
+  color: #333333;
 }
 
 /*超链接*/
@@ -63,14 +78,14 @@ big_title_container {
 .search_box {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 110px;
+  margin-bottom: 119px;
   width: 500px;
-  border-radius: 5px;
+  border-radius: 100px;
   height: 45px;
-  background-color: #f7f7f7d4;
+  background-color: #ffffffd4;
   box-shadow: var(--small-shadow);
   transition-duration: 0.2s;
-  padding: 0px 15px;
+  padding: 0px 22px;
 }
 
 .search_box:focus-within {
@@ -102,6 +117,13 @@ big_title_container {
   font-size: 16px;
   padding: 0px 15px;
   width: 0px;
+}
+
+#searchEngineInput:-webkit-autofill,
+#searchEngineInput:-webkit-autofill:hover,
+#searchEngineInput:-webkit-autofill:focus {
+  -webkit-text-fill-color: inherit;
+  transition: background-color 9999s ease-in-out 0s;
 }
 
 /*搜索框内的按钮*/
@@ -137,7 +159,7 @@ bar_top {
   text-decoration: none;
   transition-duration: 0.1s;
   padding: 10px;
-  border-radius: 5px;
+  border-radius: 50%;
   font-weight: bold;
   font-size: 22px;
   cursor: pointer;
@@ -157,7 +179,7 @@ bar_top {
 
 /*导航分类按钮*/
 .nav_select_links {
-  color: #ffffff;
+  color: #666666;
   display: flex;
   text-decoration: none;
   height: 35px;
@@ -175,14 +197,17 @@ bar_top {
   user-select: none;
 }
 
+.nav_select_links:hover {
+  color: #333333;
+}
+
 /*导航分类区*/
 nav_select {
-  display: none;
+  display: flex;
   flex-direction: row;
   height: auto;
-  width: 800px;
   flex-wrap: wrap;
-  margin-bottom: 8px;
+  margin-bottom: 12px;
   justify-content: center;
 }
 
@@ -191,8 +216,8 @@ nav {
   display: none;
   flex-direction: column;
   width: 800px;
-  background-color: #f7f7f7;
-  border-radius: 5px;
+  background-color: #f7f7fa;
+  border-radius: 10px;
   padding: 10px;
   box-shadow: var(--big-shadow);
   min-height: 500px;
@@ -222,9 +247,9 @@ nav_link {
   align-items: center;
   background-color: #ffffff;
   color: #000000;
-  border-radius: 5px;
+  border-radius: 7px;
   margin: 10px;
-  padding: 14px;
+  padding: 17px;
   transition-duration: 0.1s;
   width: 310px;
   min-height: 50px;
@@ -253,10 +278,10 @@ nav_link_right {
 
 /*导航卡片图标*/
 .icon {
-  height: 40px;
-  width: 40px;
-  border-radius: 5px;
-  margin-right: 14px;
+  height: 41px;
+  width: 41px;
+  border-radius: 100px;
+  margin-right: 17px;
   display: flex;
 }
 
@@ -373,10 +398,6 @@ settings_option {
   }
 
   nav {
-    width: 90%;
-  }
-
-  nav_select {
     width: 90%;
   }
 

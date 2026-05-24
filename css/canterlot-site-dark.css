@@ -40,6 +40,15 @@ a {
   background-color: #2e2e2e;
 }
 
+/*导航分类按钮*/
+.nav_select_links {
+  color: #e8e8e8;
+}
+
+.nav_select_links:hover {
+  color: #ffffff;
+}
+
 /*导航主区*/
 nav {
   background-color: #1e1e1e;
@@ -94,6 +103,20 @@ settings_title {
 
 .settings_button:hover {
   background-color: #333333;
+}
+
+/*纯色背景模式*/
+body.solid-background {
+  background-color: #121212;
+}
+
+body.solid-background main {
+  backdrop-filter: none;
+  background-color: transparent;
+}
+
+body.solid-background big_title_container {
+  color: white;
 }
 
 /*移动端适配*/
