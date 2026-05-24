@@ -27,10 +27,10 @@
 # 克隆仓库
 git clone <repo-url> && cd Canterlot-Site
 
-# 创建数据与日志目录
-mkdir -p data/pgdata log/app
+# 创建数据目录
+mkdir -p data/pgdata
 
-# 创建环境变量配置文件（按需修改密码等敏感信息）
+# 创建环境变量配置文件（务必修改 PG_PASSWORD 为强密码）
 cp .env.example .env
 
 # 启动所有服务
@@ -101,7 +101,6 @@ docker compose down -v
 | `./js/` | `/app/js` | JavaScript |
 | `./assets/` | `/app/assets` | 图标资源 |
 | `./font/` | `/app/font` | 字体文件 |
-| `./log/app/` | `/app/log` | 应用日志 |
 
 ### 数据库初始化
 

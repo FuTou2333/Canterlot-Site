@@ -1,9 +1,9 @@
-"""Import database data from a SQL dump file.
+"""从 SQL 转储文件导入数据库数据。
 
-Usage:
-    python import_data.py backup.sql              # import from file
-    python import_data.py - < backup.sql          # import from stdin
-    python import_data.py --dry-run backup.sql    # validate without executing
+用法：
+    python import_data.py backup.sql              # 从文件导入
+    python import_data.py - < backup.sql          # 从标准输入导入
+    python import_data.py --dry-run backup.sql    # 仅验证，不实际执行
 """
 
 import asyncio
@@ -17,12 +17,15 @@ DB_CONFIG = {
     "port": int(os.getenv("PG_PORT", "5432")),
     "database": os.getenv("PG_DATABASE", "canterlot"),
     "user": os.getenv("PG_USER", "canterlot"),
-    "password": os.getenv("PG_PASSWORD", "canterlot"),
+    "password": os.environ.get("PG_PASSWORD"),
 }
+if not DB_CONFIG["password"]:
+    print("错误：缺少 PG_PASSWORD 环境变量", file=sys.stderr)
+    sys.exit(1)
 
 
 def parse_sql_content(content):
-    """Split SQL content into individual statements, skipping comments and blanks."""
+    """将 SQL 内容拆分为独立语句，跳过注释和空行。"""
     statements = []
     current = []
     for line in content.split("\n"):
@@ -46,14 +49,14 @@ def parse_sql_content(content):
 
 async def main():
     if len(sys.argv) < 2:
-        print("Usage: python import_data.py [--dry-run] (<sql_file> | -)")
+        print("用法：python import_data.py [--dry-run] (<sql文件> | -)")
         sys.exit(1)
 
     dry_run = "--dry-run" in sys.argv
     args = [a for a in sys.argv[1:] if a != "--dry-run"]
 
     if not args:
-        print("Error: no SQL file specified")
+        print("错误：未指定 SQL 文件")
         sys.exit(1)
 
     source = args[0]
@@ -62,21 +65,21 @@ async def main():
         source_label = "stdin"
     else:
         if not os.path.exists(source):
-            print(f"Error: file not found: {source}")
+            print(f"错误：文件未找到：{source}")
             sys.exit(1)
         with open(source, "r", encoding="utf-8") as f:
             content = f.read()
         source_label = source
 
     statements = parse_sql_content(content)
-    print(f"Parsed {len(statements)} SQL statements from {source_label}")
+    print(f"从 {source_label} 解析出 {len(statements)} 条 SQL 语句")
 
     if dry_run:
-        print("[DRY RUN] Statements to execute:")
+        print("[演练模式] 将要执行的语句：")
         for i, stmt in enumerate(statements, 1):
             preview = stmt[:120] + ("..." if len(stmt) > 120 else "")
             print(f"  {i}: {preview}")
-        print("Dry run complete. No changes made.")
+        print("演练完成。未做任何更改。")
         return
 
     conn = await asyncpg.connect(**DB_CONFIG)
@@ -87,17 +90,17 @@ async def main():
                 try:
                     await conn.execute(stmt)
                 except Exception as e:
-                    print(f"Error at statement {i}: {e}")
-                    print(f"  SQL: {stmt[:200]}")
+                    print(f"第 {i} 条语句出错：{e}")
+                    print(f"  SQL：{stmt[:200]}")
                     raise
-        print(f"Successfully executed {len(statements)} statements.")
+        print(f"成功执行 {len(statements)} 条语句。")
     except Exception:
-        print("Import failed. All changes have been rolled back.")
+        print("导入失败。所有更改已回滚。")
         await conn.close()
         sys.exit(1)
 
     await conn.close()
-    print("Import complete.")
+    print("导入完成。")
 
 
 if __name__ == "__main__":

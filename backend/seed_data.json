@@ -159,7 +159,7 @@
     ]
   },
   {
-    "url": "http://rainbowdash.net/",
+    "url": "https://rainbowdash.net/",
     "title": "Rainbow Dash Network",
     "description": "云宝黛茜论坛",
     "icon": "./assets/rainbowdashnetwork.jpg",
@@ -214,7 +214,7 @@
     ]
   },
   {
-    "url": "http://ponyvillelive.com/",
+    "url": "https://ponyvillelive.com/",
     "title": "PonyvilleLive",
     "description": "马镇直播，音频视频都有",
     "icon": "./assets/ponyvillelive.png",
@@ -290,7 +290,7 @@
     ]
   },
   {
-    "url": "http://foe.ucoz.org/main_en.html",
+    "url": "https://foe.ucoz.org/main_en.html",
     "title": "FoE: Remains",
     "description": "《辐射小马国：废墟》游戏官网",
     "icon": "./assets/foeremains.ico",
@@ -317,7 +317,7 @@
     ]
   },
   {
-    "url": "http://arcade.equestriagaming.net/",
+    "url": "https://arcade.equestriagaming.net/",
     "title": "Equestria Gaming Arcade",
     "description": "小马游戏在线玩",
     "icon": "./assets/equestriagaming.png",
@@ -685,7 +685,7 @@
     ]
   },
   {
-    "url": "http://mlpaudiobooks.net/",
+    "url": "https://mlpaudiobooks.net/",
     "title": "MLP Audiobooks",
     "description": "小马有声书资源站",
     "icon": "./assets/mlpaudiobooks.jpg",
@@ -799,7 +799,7 @@
     ]
   },
   {
-    "url": "http://friendshipisdragons.com/",
+    "url": "https://friendshipisdragons.com/",
     "title": "Friendship is Dragons",
     "description": "友谊是巨龙",
     "icon": "./assets/friendshipisdragons.png",
@@ -912,7 +912,7 @@
     ]
   },
   {
-    "url": "http://yayponies.no/",
+    "url": "https://yayponies.no/",
     "title": "YayPonies",
     "description": "著名小马资源站，官方同人都有部分，其中官方特别全",
     "icon": "./assets/yayponies.png",
@@ -921,7 +921,7 @@
     ]
   },
   {
-    "url": "http://www.theponyarchive.com/",
+    "url": "https://www.theponyarchive.com/",
     "title": "The Pony Archive",
     "description": "小马档案馆，存放各种同人作品，不乏被删除的珍贵资源",
     "icon": "./assets/theponyarchive.png",
@@ -1018,7 +1018,7 @@
     ]
   },
   {
-    "url": "http://mlp-france.com/",
+    "url": "https://mlp-france.com/",
     "title": "MLP France",
     "description": "内有小马剧集/电影/漫画，以及早期小马剧集",
     "icon": "./assets/mlpfrance.png",
@@ -1029,7 +1029,7 @@
     ]
   },
   {
-    "url": "http://www.newlunarrepublic.fr/",
+    "url": "https://www.newlunarrepublic.fr/",
     "title": "New Lunar Republic",
     "description": "新露娜共和国，内有小马剧集/电影/漫画",
     "icon": "./assets/newlunarrepublic.png",

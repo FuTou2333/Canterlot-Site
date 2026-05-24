@@ -18,40 +18,40 @@
   <main id="main">
 
     <!--顶部导航条-->
-    <bar_top>
+    <div class="bar_top">
 
       <!--设置菜单按钮-->
       <a class="bar_top_links" id="settingsButton" onclick="changeSettings()" aria-label="设置菜单按钮">⚙</a>
 
       <!--设置菜单-->
-      <settings id="settings">
+      <div class="settings_menu" id="settings">
 
         <!--设置菜单的一个类别-->
-        <settings_class>
+        <div class="settings_class">
 
           <!--设置菜单的一个类别的标题-->
-          <settings_title>外观</settings_title>
+          <div class="settings_title">外观</div>
 
           <!--设置菜单的一行-->
-          <settings_option>
+          <div class="settings_option">
             <input type="checkbox" class="settings_form" id="darkMode" onclick="change_darkMode()">
             <label class="settings_description" for="darkMode">深色模式</label>
-          </settings_option>
+          </div>
 
-        </settings_class>
+        </div>
 
-        <settings_class>
+        <div class="settings_class">
 
-          <settings_title>背景</settings_title>
+          <div class="settings_title">背景</div>
 
           <form>
 
-            <settings_option>
+            <div class="settings_option">
               <input type="radio" name="background" class="settings_form" id="meiRiYiTu" checked>
               <label class="settings_description" for="meiRiYiTu">每日一图</label>
-            </settings_option>
+            </div>
 
-            <settings_option>
+            <div class="settings_option">
               <input type="radio" name="background" class="settings_form" id="ziDingYi">
               <label class="settings_description" for="ziDingYi">自定义</label>
               <div style="display:flex;flex-direction:row;display:none;" id="ziDingYiInputDiv">
@@ -59,95 +59,92 @@
                 <button type="button" class="applyBackgroundButton" style="display:flex;align-items:center;"
                   onclick="applyBackgroundImage()">应用</button>
               </div>
-            </settings_option>
+            </div>
 
-            <settings_option>
+            <div class="settings_option">
               <input type="radio" name="background" class="settings_form" id="chunSeBeiJing">
               <label class="settings_description" for="chunSeBeiJing">纯色背景</label>
-            </settings_option>
+            </div>
 
           </form>
 
-        </settings_class>
+        </div>
 
-        <settings_class>
+        <div class="settings_class">
 
-          <settings_title>页面布局</settings_title>
+          <div class="settings_title">页面布局</div>
 
-          <settings_option>
+          <div class="settings_option">
             <input type="checkbox" class="settings_form" id="xianShiDaoHang" onclick="change_xianShiDaoHang()" checked>
             <label class="settings_description" for="xianShiDaoHang">显示导航</label>
-          </settings_option>
+          </div>
 
-          <settings_option>
+          <div class="settings_option">
             <input type="checkbox" class="settings_form" id="xianShiFangWenLiang"
               onclick="changeElementHideOrShow(this.id)" checked>
             <label class="settings_description" for="xianShiFangWenLiang">显示访问量</label>
-          </settings_option>
+          </div>
 
-        </settings_class>
+        </div>
 
         <!--设置菜单中的按钮-->
         <div style="display:flex;justify-content: center;">
-          <a class="settings_button" style="margin-right:5px;" onclick="setDefultSettings();">恢复默认</a>
+          <a class="settings_button" style="margin-right:5px;" onclick="setDefaultSettings();">恢复默认</a>
           <a href="./about.html" target="_blank" class="settings_button" style="margin-left:5px;">关于本站</a>
         </div>
 
-      </settings>
+      </div>
 
-    </bar_top>
+    </div>
 
     <!--搜索框上面的标题-->
-    <big_title_container>
+    <div class="big_title_container">
       <!--时间显示-->
       <span id="displayTime" style="font-size: 46px;font-family: 'HarmonyOS_Sans_Regular';"></span>
       <!--显示访问次数和独立IP访问量-->
       <span style="font-weight: bold;display: none;" id="xianShiFangWenLiang_Target">
-        <span id="busuanzi_container_site_pv" style="margin-right:10px;">
-          访问量：<span id="busuanzi_value_site_pv"></span>
+        <span style="margin-right:10px;">
+          访问量：<span id="site_pv">-</span>
         </span>
-        <span id="busuanzi_container_site_uv">
-          访客量：<span id="busuanzi_value_site_uv"></span>
+        <span>
+          访客量：<span id="site_uv">-</span>
         </span>
       </span>
-    </big_title_container>
+    </div>
 
     <!--时间显示js-->
     <script>
       function getTime() {
-        let rawTime = Date().slice(16, 21); //从Date()返回的一大串东西中截取到XX:XX格式的时间
-        if (rawTime.slice(0, 1) === "0") {  //如果小时的第一位是0，则去掉
-          var time = rawTime.slice(1, 5);
-        } else {
-          var time = rawTime; //如果第一位不是0则直接输出
-        }
-        document.getElementById("displayTime").innerHTML = time;
+        const t = new Date();
+        const h = t.getHours().toString().padStart(2, '0');
+        const m = t.getMinutes().toString().padStart(2, '0');
+        document.getElementById("displayTime").textContent = h + ':' + m;
       }
-      getTime(); //先执行一次getTime()
-      setInterval("getTime()", 1000); //以后每秒执行一次getTime()
+      getTime();
+      setInterval(getTime, 1000);
     </script>
 
     <!--搜索框-->
     <div class="search_box">
       <div class="menu">
         <div class="menu-list">
-          <button class="menu-item" onfocus="setSearchEngine('百度')">
+          <button class="menu-item" onclick="setSearchEngine('百度')">
             <img src="./assets/engineBaidu.svg">
             <span>百度</span>
           </button>
-          <button class="menu-item" onfocus="setSearchEngine('必应')">
+          <button class="menu-item" onclick="setSearchEngine('必应')">
             <img src="./assets/engineBing.svg">
             <span>必应</span>
           </button>
-          <button class="menu-item" onfocus="setSearchEngine('Derpibooru图片')">
+          <button class="menu-item" onclick="setSearchEngine('Derpibooru图片')">
             <img src="./assets/engineDerpibooru.svg">
             <span>Derpibooru图片</span>
           </button>
-          <button class="menu-item" onfocus="setSearchEngine('FimTale小说')">
+          <button class="menu-item" onclick="setSearchEngine('FimTale小说')">
             <img src="./assets/engineFimtale.ico">
             <span>FimTale小说</span>
           </button>
-          <button class="menu-item" onfocus="setSearchEngine('EqCN资讯')">
+          <button class="menu-item" onclick="setSearchEngine('EqCN资讯')">
             <img src="./assets/equestriacn.ico">
             <span>EqCN资讯</span>
           </button>
@@ -168,11 +165,11 @@
     <nav id="nav">
 
       <!--导航分类（按钮由 JS 动态生成）-->
-      <nav_select id="navSelect"></nav_select>
+      <div class="nav_select" id="navSelect"></div>
 
       <!--导航链接-->
-      <nav_links id="navLinksContainer">
-      </nav_links>
+      <div class="nav_links" id="navLinksContainer">
+      </div>
 
     </nav>
 
@@ -187,8 +184,19 @@
   <!--导入搜索引擎切换js-->
   <script src="./js/searchEngineSelectMenu.js"></script>
 
-  <!--不蒜子访问量统计脚本-->
-  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  <!--站点统计-->
+  <script>
+    fetch('/api/visit', {method: 'POST'})
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        document.getElementById('site_pv').textContent = data.page_views;
+        document.getElementById('site_uv').textContent = data.visitors;
+      })
+      .catch(function() {
+        document.getElementById('site_pv').textContent = '-';
+        document.getElementById('site_uv').textContent = '-';
+      });
+  </script>
 
 </body>
 

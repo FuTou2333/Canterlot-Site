@@ -53,18 +53,18 @@ body.solid-background main {
   background-color: transparent;
 }
 
-body.solid-background big_title_container {
+body.solid-background .big_title_container {
   color: #333333;
 }
 
-/*超链接*/
-a {
+/*超链接（导航卡片用）*/
+.nav_links > a {
   text-decoration: none;
   display: flex;
 }
 
 /*搜索框上面的标题*/
-big_title_container {
+.big_title_container {
   margin-top: 60px;
   margin-bottom: 25px;
   display: flex;
@@ -144,7 +144,7 @@ big_title_container {
 }
 
 /*顶部导航条*/
-bar_top {
+.bar_top {
   display: flex;
   width: 100%;
   background: transparent;
@@ -202,7 +202,7 @@ bar_top {
 }
 
 /*导航分类区*/
-nav_select {
+.nav_select {
   display: flex;
   flex-direction: row;
   height: auto;
@@ -224,24 +224,15 @@ nav {
 }
 
 /*导航的链接部分*/
-nav_links {
+.nav_links {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: center;
 }
 
-/*导航的一个类*/
-choice {
-  display: none;
-  flex-wrap: wrap;
-  width: 100%;
-  justify-content: center;
-  flex-direction: row;
-}
-
 /*导航卡片*/
-nav_link {
+.nav_link {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -257,20 +248,20 @@ nav_link {
 }
 
 /*导航卡片-悬浮变色*/
-nav_link:hover {
+.nav_link:hover {
   background-color: #ffffff50;
   transition-duration: 0.1s;
 }
 
 /*导航卡片标题*/
-nav_link_title {
+.nav_link_title {
   font-size: 18px;
   font-weight: bold;
   margin-bottom: 2px;
 }
 
 /*导航卡片下半部分*/
-nav_link_right {
+.nav_link_right {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -286,13 +277,13 @@ nav_link_right {
 }
 
 /*导航卡片介绍*/
-nav_link_description {
+.nav_link_description {
   font-size: 14px;
   color: #9c9c9c;
 }
 
 /*设置菜单*/
-settings {
+.settings_menu {
   display: flex;
   z-index: 99;
   flex-direction: column;
@@ -311,7 +302,7 @@ settings {
 }
 
 /*设置菜单的一个类别*/
-settings_class {
+.settings_class {
   display: flex;
   flex-direction: column;
   background-color: #ffffff;
@@ -322,19 +313,19 @@ settings_class {
 }
 
 /*让设置菜单的每个类别的最后一行底部外边距变为原来的一半*/
-settings_class>settings_option:last-child,
-form>settings_option:last-child {
+.settings_class>.settings_option:last-child,
+form>.settings_option:last-child {
   margin-bottom: 5px;
 }
 
 /*设置菜单的一个类别的标题*/
-settings_title {
+.settings_title {
   font-weight: bold;
   margin-bottom: 15px;
 }
 
 /*设置菜单的一行*/
-settings_option {
+.settings_option {
   display: flex;
   align-items: center;
   margin-bottom: 10px;
@@ -388,11 +379,7 @@ settings_option {
 }
 
 /*移动端适配*/
-@media (max-width: 600px) {
-
-
-
-  /*宽度适配*/
+@media (max-width: 600px) {  /*宽度适配*/
   .search_box {
     width: 70%;
   }
@@ -401,37 +388,30 @@ settings_option {
     width: 90%;
   }
 
-  choice {
-    flex-direction: column;
-    flex-wrap: nowrap;
-  }
-
-  nav_links > a {
+  .nav_links > a {
     display: block;
     width: 100%;
   }
 
-  nav_links {
+  .nav_links {
     flex-direction: column;
     width: 100%;
   }
 
-  nav_link {
+  .nav_link {
     width: 100%;
     box-sizing: border-box;
     margin: 8px 0;
     box-shadow: var(--card-border);
   }
 
-  nav_link_right {
+  .nav_link_right {
     min-width: 0;
     overflow: hidden;
   }
 
-
-
   /*把以下元素hover的颜色设为原来的，相当于没有*/
-  nav_link:hover {
+  .nav_link:hover {
     background-color: #ffffff;
   }
 
@@ -442,7 +422,5 @@ settings_option {
   nav {
     padding: 8px;
   }
-
-
 
 }

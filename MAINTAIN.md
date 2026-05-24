@@ -5,7 +5,7 @@
 ```
 Canterlot-Site/
 ├── backend/
-│   ├── app.py                 # FastAPI 后端入口
+│   ├── app.py                 # FastAPI 后端入口（含限流中间件）
 │   ├── database.py            # 数据库连接与建表
 │   ├── init_db.py             # 数据初始化与导入脚本
 │   ├── export_data.py         # 数据导出为 SQL 文件
@@ -21,9 +21,10 @@ Canterlot-Site/
 ├── font/                      # 字体文件
 ├── index.html                 # 主页
 ├── about.html                 # 关于页
+├── .env.example               # 环境变量模板
 ├── Dockerfile
 ├── docker-compose.yml
-└── data/pgdata/               # 数据库持久化数据（不提交到 Git）
+└── data/pgdata/               # 数据库持久化数据（不提交到 Git，首次启动前需手动创建）
 ```
 
 ## 添加新链接
@@ -137,17 +138,18 @@ docker compose down && rm -rf data/pgdata && docker compose up -d --build
 将数据库中的全部数据导出为 SQL 文件：
 
 ```bash
-# 完整导出（含点击量、时间戳）
+# 完整导出（含点击量、时间戳、访问记录）
 docker compose exec -T app python export_data.py > backup_$(date +%Y%m%d).sql
 
 # 仅导出结构数据（不含点击量，适合版本控制）
-docker compose exec -T app python export_data.py --no-click-count > backup.sql
+docker compose exec -T app python export_data.py --no-click-count --no-visits > backup.sql
 ```
 
-导出的 SQL 文件包含三类数据：
+导出的 SQL 文件包含四类数据：
 - **categories** — 分类定义（key、名称、排序）
 - **links** — 链接数据（URL、标题、描述、图标、点击量、时间戳）
 - **link_categories** — 链接与分类的对应关系
+- **visits** — 页面访问记录（IP、是否新增访客、访问时间），可通过 `--no-visits` 排除
 
 所有 INSERT 语句使用 `ON CONFLICT` 语法，导入时自动处理重复数据。
 
@@ -186,13 +188,13 @@ docker compose exec -T app python import_data.py --dry-run - < backup.sql
 # 查看所有容器状态
 docker compose ps
 
-# 查看应用日志（实时跟踪）
+# 查看应用日志（实时跟踪，Docker logging driver 已配置 10MB × 3 轮转）
 docker compose logs -f app
 
 # 查看 Nginx 日志
 docker compose logs -f nginx
 
-# 重启应用（修改前端后）
+# 重启应用（修改前端或后端代码后）
 docker compose restart app
 
 # 重新构建并启动（修改 Dockerfile 或 requirements.txt 后）
@@ -201,7 +203,7 @@ docker compose up -d --build
 # 停止所有服务
 docker compose down
 
-# 进入数据库
+# 进入数据库（无需密码，通过容器内 socket 连接）
 docker compose exec postgres psql -U canterlot -d canterlot
 ```
 
@@ -218,8 +220,12 @@ docker compose exec postgres psql -U canterlot -d canterlot
 
 ## 注意事项
 
+- **环境变量**：部署前必须 `cp .env.example .env` 并修改 `PG_PASSWORD` 为强密码。`PG_PASSWORD` 没有默认值，未设置时容器无法启动
 - `seed_data.json` 中的 `url` 字段是唯一键，导入时按 URL 去重
 - `categories` 数组中的值必须是 `categories.json` 中已定义的 key（数据库有外键约束）
 - 图标 `./assets/website.png` 是默认图标，找不到图标时前端会自动回退
 - "热点"是前端特殊处理的内置分类，不出现在 `categories.json` 中
 - 移动端适配断点为 600px，修改 CSS 时注意 `@media (max-width: 600px)` 规则
+- 点击 API 有 IP 级别限流（每 10 秒 20 次），触达后返回 429。前端点击行为不受影响，但脚本刷量会被拦截
+- 访问量/访客量统计使用后端数据库记录（`visits` 表），同一 IP 在 30 分钟内重复访问只计访问量不计访客量。页面加载时调用 `POST /api/visit` 自动记录
+- 自定义背景图片仅允许 `http://`、`https://`、`./`、`../`、`/` 开头的链接

@@ -3,8 +3,8 @@ main {
   background-color: #00000096;
 }
 
-/*超链接*/
-a {
+/*超链接（导航卡片用）*/
+.nav_links > a {
   text-decoration: none;
 }
 
@@ -56,36 +56,36 @@ nav {
 }
 
 /*导航卡片*/
-nav_link {
+.nav_link {
   background-color: #2e2e2e;
   color: #ffffff;
   box-shadow: none;
 }
 
 /*导航卡片-悬浮变色*/
-nav_link:hover {
+.nav_link:hover {
   background-color: #333333;
 }
 
 /*导航卡片介绍*/
-nav_link_description {
+.nav_link_description {
   color: #a6a6a6;
 }
 
 /*设置菜单*/
-settings {
+.settings_menu {
   background-color: #1e1e1e;
   box-shadow: var(--dark-mode-shadow);
 }
 
 /*设置菜单的一个类别*/
-settings_class {
+.settings_class {
   background-color: #2e2e2e;
   box-shadow: none;
 }
 
 /*设置菜单的一个类别的标题*/
-settings_title {
+.settings_title {
   color: #ffffff;
 }
 
@@ -115,7 +115,7 @@ body.solid-background main {
   background-color: transparent;
 }
 
-body.solid-background big_title_container {
+body.solid-background .big_title_container {
   color: white;
 }
 
@@ -123,7 +123,7 @@ body.solid-background big_title_container {
 @media (max-width: 600px) {
 
   /*把以下元素hover的颜色设为原来的，相当于没有*/
-  nav_link:hover {
+  .nav_link:hover {
     background-color: #2e2e2e;
   }
 

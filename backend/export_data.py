@@ -1,106 +1,76 @@
-"""Export database data as SQL dump.
+"""导出数据库数据为 SQL 转储（使用 pg_dump 确保安全）。
 
-Usage:
-    python export_data.py > backup.sql        # export to file
-    python export_data.py --no-click-count    # exclude click_count data
+用法：
+    python export_data.py > backup.sql        # 导出到文件
+    python export_data.py --no-click-count    # 导出时清零点击计数
+    python export_data.py --no-visits         # 排除访问记录
 """
 
-import asyncio
-import asyncpg
 import os
+import re
+import subprocess
 import sys
-from datetime import datetime
+
+DB_HOST = os.getenv("PG_HOST", "127.0.0.1")
+DB_PORT = os.getenv("PG_PORT", "5432")
+DB_NAME = os.getenv("PG_DATABASE", "canterlot")
+DB_USER = os.getenv("PG_USER", "canterlot")
+DB_PASSWORD = os.environ.get("PG_PASSWORD")
+if not DB_PASSWORD:
+    print("错误：缺少 PG_PASSWORD 环境变量", file=sys.stderr)
+    sys.exit(1)
 
 
-DB_CONFIG = {
-    "host": os.getenv("PG_HOST", "127.0.0.1"),
-    "port": int(os.getenv("PG_PORT", "5432")),
-    "database": os.getenv("PG_DATABASE", "canterlot"),
-    "user": os.getenv("PG_USER", "canterlot"),
-    "password": os.getenv("PG_PASSWORD", "canterlot"),
-}
+def zero_click_count(sql_output):
+    """将 links 表 INSERT 语句中的 click_count 列置零。"""
+    lines = sql_output.split("\n")
+    result = []
+    for line in lines:
+        if "INSERT INTO" in line and "links" in line and "VALUES" in line:
+            line = re.sub(
+                r", (\d+), (NULL|'[^']*'), ('[^']*'\);)$",
+                r", 0, \2, \3",
+                line,
+            )
+        result.append(line)
+    return "\n".join(result)
 
 
-def escape_sql(value):
-    """Escape a value for SQL string literal."""
-    if value is None:
-        return "NULL"
-    return "'" + str(value).replace("'", "''") + "'"
-
-
-def format_timestamptz(val):
-    """Format a datetime for SQL insertion."""
-    if val is None:
-        return "NULL"
-    return escape_sql(val.isoformat())
-
-
-async def main():
+def main():
     no_clicks = "--no-click-count" in sys.argv
+    no_visits = "--no-visits" in sys.argv
 
-    conn = await asyncpg.connect(**DB_CONFIG)
+    env = os.environ.copy()
+    env["PGPASSWORD"] = DB_PASSWORD
 
-    sql_lines = []
-    sql_lines.append(f"-- Canterlot Site data export")
-    sql_lines.append(f"-- Generated: {datetime.now().isoformat()}")
-    sql_lines.append("")
+    base_cmd = [
+        "pg_dump",
+        "-h", DB_HOST,
+        "-p", DB_PORT,
+        "-U", DB_USER,
+        "-d", DB_NAME,
+        "--no-owner",
+        "--no-acl",
+        "--inserts",
+        "--on-conflict-do-nothing",
+    ]
 
-    # --- Categories ---
-    categories = await conn.fetch("SELECT key, label, sort_order FROM categories ORDER BY sort_order")
-    sql_lines.append("-- ====== Categories ======")
-    for row in categories:
-        sql_lines.append(
-            f"INSERT INTO categories (key, label, sort_order) VALUES "
-            f"({escape_sql(row['key'])}, {escape_sql(row['label'])}, {row['sort_order']}) "
-            f"ON CONFLICT (key) DO UPDATE SET label = EXCLUDED.label, sort_order = EXCLUDED.sort_order;"
-        )
-    sql_lines.append("")
+    if no_visits:
+        base_cmd.extend(["--exclude-table-data", "visits"])
 
-    # --- Links ---
-    links = await conn.fetch(
-        "SELECT id, url, title, description, icon, click_count, last_clicked_at, created_at "
-        "FROM links ORDER BY id"
-    )
-    sql_lines.append("-- ====== Links ======")
-    for row in links:
-        click_val = "0" if no_clicks else str(row["click_count"])
-        last_clicked_val = "NULL" if no_clicks else format_timestamptz(row["last_clicked_at"])
+    result = subprocess.run(base_cmd, env=env, capture_output=True, text=True)
+    if result.returncode != 0:
+        print(f"pg_dump 错误：{result.stderr}", file=sys.stderr)
+        sys.exit(1)
 
-        sql_lines.append(
-            f"INSERT INTO links (id, url, title, description, icon, click_count, last_clicked_at, created_at) VALUES ("
-            f"{row['id']}, {escape_sql(row['url'])}, {escape_sql(row['title'])}, "
-            f"{escape_sql(row['description'])}, {escape_sql(row['icon'])}, "
-            f"{click_val}, {last_clicked_val}, {format_timestamptz(row['created_at'])}"
-            f") ON CONFLICT (id) DO UPDATE SET "
-            f"url = EXCLUDED.url, title = EXCLUDED.title, description = EXCLUDED.description, "
-            f"icon = EXCLUDED.icon, click_count = EXCLUDED.click_count, "
-            f"last_clicked_at = EXCLUDED.last_clicked_at;"
-        )
-    sql_lines.append("")
+    output = result.stdout
 
-    # --- Link Categories ---
-    link_cats = await conn.fetch(
-        "SELECT link_id, category FROM link_categories ORDER BY link_id, category"
-    )
-    sql_lines.append("-- ====== Link Categories ======")
-    for row in link_cats:
-        sql_lines.append(
-            f"INSERT INTO link_categories (link_id, category) VALUES "
-            f"({row['link_id']}, {escape_sql(row['category'])}) "
-            f"ON CONFLICT DO NOTHING;"
-        )
-    sql_lines.append("")
+    if no_clicks:
+        output = zero_click_count(output)
+        print("-- 已将 click_count 列重置为 0", file=sys.stderr)
 
-    # --- Reset sequence ---
-    sql_lines.append("-- Reset link ID sequence")
-    sql_lines.append(
-        "SELECT setval('links_id_seq', COALESCE((SELECT MAX(id) FROM links), 1));"
-    )
-
-    await conn.close()
-
-    print("\n".join(sql_lines))
+    print(output)
 
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    main()

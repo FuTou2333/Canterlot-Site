@@ -4,7 +4,7 @@ services:
     environment:
       POSTGRES_DB: ${PG_DATABASE:-canterlot}
       POSTGRES_USER: ${PG_USER:-canterlot}
-      POSTGRES_PASSWORD: ${PG_PASSWORD:-canterlot}
+      POSTGRES_PASSWORD: ${PG_PASSWORD:?请先在 .env 文件中设置 PG_PASSWORD}
     volumes:
       - ./data/pgdata:/var/lib/postgresql/data
     healthcheck:
@@ -26,11 +26,14 @@ services:
 
   redis:
     image: redis:7-alpine
+    command: redis-server --requirepass ${REDIS_PASSWORD:-}
     healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
+      test: ["CMD", "redis-cli", "-a", "${REDIS_PASSWORD:-}", "ping"]
       interval: 3s
       timeout: 3s
       retries: 10
+    volumes:
+      - ./data/redis:/data
     restart: unless-stopped
     networks:
       - canterlot
@@ -52,10 +55,11 @@ services:
       PG_PORT: ${PG_PORT:-5432}
       PG_DATABASE: ${PG_DATABASE:-canterlot}
       PG_USER: ${PG_USER:-canterlot}
-      PG_PASSWORD: ${PG_PASSWORD:-canterlot}
+      PG_PASSWORD: ${PG_PASSWORD:?请先在 .env 文件中设置 PG_PASSWORD}
       REDIS_HOST: ${REDIS_HOST:-redis}
       REDIS_PORT: ${REDIS_PORT:-6379}
       REDIS_DB: ${REDIS_DB:-0}
+      REDIS_PASSWORD: ${REDIS_PASSWORD:-}
     depends_on:
       postgres:
         condition: service_healthy
@@ -78,7 +82,11 @@ services:
       - ./js:/app/js:ro
       - ./assets:/app/assets:ro
       - ./font:/app/font:ro
-      - ./log/app:/app/log
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
     deploy:
       resources:
         limits:
